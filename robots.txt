@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dusskapark.github.io/blue-photo-website/sitemap.xml
