@@ -1,0 +1,2 @@
+# Preserve the official SVG bytes, including Microsoft's CRLF line endings.
+public/assets/badges/*.svg -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

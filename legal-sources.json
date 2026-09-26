@@ -1,0 +1,58 @@
+{
+  "retrievedAt": "2026-09-26T17:22:07.953192+00:00",
+  "policy": "Preserve published wording, effective dates and links; separate languages only. No legal revisions or new translation.",
+  "documents": [
+    {
+      "file": "public/legal/privacy-policy.ko.md",
+      "language": "ko",
+      "sourceUrl": "https://suwon.bluewings.photo/notice/604",
+      "sourceHtmlSha256": "fa085480f3e6793a5d6c9689fc8197a1f1a74481f316bdc0ef2b672ca5c7b554",
+      "fileSha256": "fb4f7b9b8b4df467c8e8106bc8ba9bcb70e2a6af90d080147821ac6b2a38c77b",
+      "version": "1.0",
+      "effectiveDate": "2026-09-08",
+      "notes": "Published text matches the existing repository document after formatting and whitespace normalization.",
+      "publishedTextSha256": "30da96676dad032f495eff0eac8e091d74cb836af06ed0f07a2beb65620205d2",
+      "normalizedCharacters": 3972,
+      "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
+    },
+    {
+      "file": "public/legal/privacy-policy.en.md",
+      "language": "en",
+      "sourceUrl": "https://suwon.bluewings.photo/notice/604",
+      "sourceHtmlSha256": "fa085480f3e6793a5d6c9689fc8197a1f1a74481f316bdc0ef2b672ca5c7b554",
+      "fileSha256": "67d778189a03ef31fe16da2a0385197d07fc6afd5cb9b1cb17ed8ce168393bbb",
+      "version": "1.0",
+      "effectiveDate": "2026-09-08",
+      "notes": "Published text matches the existing repository document after formatting and whitespace normalization.",
+      "publishedTextSha256": "9f3b45dea5db95d91007d04572182d1bb11d76ccb5486c3244314b450421dbf8",
+      "normalizedCharacters": 9011,
+      "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
+    },
+    {
+      "file": "public/legal/terms-of-service.ko.txt",
+      "language": "ko",
+      "sourceUrl": "https://suwon.bluewings.photo/notice/603",
+      "sourceHtmlSha256": "9dfc53b55e9a5db82ebcdf2f02a86699a37f30fa58974a5323d3392502b35b72",
+      "fileSha256": "7bc4e7c5f7c4dbfe12f6dc671ca4c7afa444735624294ce169924e18a1ffa3af",
+      "version": "1.0",
+      "effectiveDate": "2026-09-08",
+      "notes": "Published Korean terms contain the literal string “gks” before “JooHyung Park” in section 2; retained verbatim.",
+      "publishedTextSha256": "d622058c4b90b77ac8f1abcdd2db9c91db2d3b1083057eae03200f33bd264fab",
+      "normalizedCharacters": 2124,
+      "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
+    },
+    {
+      "file": "public/legal/terms-of-service.en.txt",
+      "language": "en",
+      "sourceUrl": "https://suwon.bluewings.photo/notice/603",
+      "sourceHtmlSha256": "9dfc53b55e9a5db82ebcdf2f02a86699a37f30fa58974a5323d3392502b35b72",
+      "fileSha256": "6f348cd9c4aaa0328a1dcb957b99f17ab5369ab0b082ef88d58b25f38851d039",
+      "version": "1.0",
+      "effectiveDate": "2026-09-08",
+      "notes": "Published text matches the existing repository document after formatting and whitespace normalization.",
+      "publishedTextSha256": "47f103ee4363d385d1cfa463bcf9a0d0e370d25c7a6240b4a4d276b866abba01",
+      "normalizedCharacters": 4332,
+      "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "file": "library.jpg",
+    "source": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f1/15/51/f11551d4-abcd-5f1e-e6ba-5541b5aa18b0/01-library.png/600x1300bb.jpg",
+    "usage": "Public Blue Photo App Store screenshot, fetched 2026-09-27"
+  },
+  {
+    "file": "collections.jpg",
+    "source": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f2/bf/78/f2bf7804-50ea-b86b-2a59-bcc8cc7bec56/02-collections.png/600x1300bb.jpg",
+    "usage": "Public Blue Photo App Store screenshot, fetched 2026-09-27"
+  },
+  {
+    "file": "app-icon.png",
+    "source": "Existing Blue Photo app icon supplied by the app owner",
+    "usage": "Blue Photo brand artwork used for link previews; retained from the approved website assets."
+  },
+  {
+    "file": "app-icon.jpg",
+    "source": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ee/74/f4/ee74f405-a21f-3183-14a7-f02a877ce82c/AppIcon-0-0-1x_U007epad-0-1-85-220.png/512x512bb.jpg",
+    "usage": "Optimized official public App Store icon for visible page UI; fetched 2026-09-27."
+  },
+  {
+    "file": "badges/app-store-en.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/badges/download-on-the-app-store/black/en-us",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://developer.apple.com/app-store/marketing/guidelines/"
+  },
+  {
+    "file": "badges/app-store-ko.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/badges/download-on-the-app-store/black/ko-kr",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://developer.apple.com/app-store/marketing/guidelines/"
+  },
+  {
+    "file": "badges/google-play-en.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://partnermarketinghub.withgoogle.com/brands/google-play/google-play/lockups-icons-badges/"
+  },
+  {
+    "file": "badges/google-play-ko.png",
+    "source": "https://play.google.com/intl/ko/badges/static/images/badges/ko_badge_web_generic.png",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://partnermarketinghub.withgoogle.com/brands/google-play/google-play/lockups-icons-badges/"
+  },
+  {
+    "file": "badges/microsoft-store-en.svg",
+    "source": "https://get.microsoft.com/images/en-us%20dark.svg",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://download.microsoft.com/download/0/7/D/07DF43D4-B1A8-4D38-BC02-4903BB36CEE8/Microsoft_Store_Badge_Guidelines.pdf"
+  },
+  {
+    "file": "badges/microsoft-store-ko.svg",
+    "source": "https://get.microsoft.com/images/ko%20dark.svg",
+    "usage": "Official localized store badge; original artwork and aspect ratio preserved.",
+    "guidelines": "https://download.microsoft.com/download/0/7/D/07DF43D4-B1A8-4D38-BC02-4903BB36CEE8/Microsoft_Store_Badge_Guidelines.pdf"
+  }
+]
