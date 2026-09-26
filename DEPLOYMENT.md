@@ -6,7 +6,9 @@
 - Source branch: `main`.
 - Built static branch: `codex/github-pages`, directory `/`.
 - Default URL: `https://dusskapark.github.io/blue-photo-website/`.
-- Custom domain: none. The user will request domain connection separately.
+- Repository custom domain: none. The user will request domain connection separately.
+- The account's existing user-site domain is `api.metadata.co.kr`. GitHub automatically redirects the default address to `https://api.metadata.co.kr/blue-photo-website/`. This is inherited behavior, not a newly configured domain. The account-level setting is unchanged.
+- HTTPS is enforced for this Pages site.
 
 Build and test locally before publishing:
 

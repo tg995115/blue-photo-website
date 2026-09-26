@@ -4,6 +4,8 @@ The public website for Blue Photo: a photo archive for Suwon Samsung supporters.
 
 **GitHub Pages:** https://dusskapark.github.io/blue-photo-website/
 
+The account's existing user-site domain currently redirects that address to https://api.metadata.co.kr/blue-photo-website/. This repository has no custom domain configured; the account-level setting has not been changed.
+
 This repository contains only the website. It does not contain the iOS, Android or Windows applications, the catalog backend, or their Git history.
 
 ## What it serves
