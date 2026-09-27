@@ -6,37 +6,41 @@ import { fileURLToPath } from "node:url";
 import { createBuildConfig } from "../src/build-config.mjs";
 
 const root = fileURLToPath(new URL("../dist-pages/", import.meta.url));
-const publicUrl = "https://dusskapark.github.io/blue-photo-website/";
-const base = "/blue-photo-website/";
+const publicUrl = "https://app.bluewings.photo/";
+const repositoryUrl = "https://tg995115.github.io/blue-photo-website/";
+const base = "/";
 
 test("build profiles support the repository path without enabling a custom domain", () => {
   const profile = createBuildConfig({
-    siteUrl: publicUrl,
+    siteUrl: repositoryUrl,
     outputDir: "dist-pages",
   });
   assert.equal(profile.pathFor("/en/privacy/"), "/blue-photo-website/en/privacy/");
   assert.equal(
     profile.absoluteUrl("/assets/app-icon.png"),
-    publicUrl + "assets/app-icon.png",
+    repositoryUrl + "assets/app-icon.png",
   );
   assert.equal(profile.customDomain, "");
   assert.throws(() => createBuildConfig({ outputDir: "src" }));
   assert.throws(() =>
-    createBuildConfig({ siteUrl: publicUrl, customDomain: "bluewings.photo" }),
+    createBuildConfig({
+      siteUrl: repositoryUrl,
+      customDomain: "app.bluewings.photo",
+    }),
   );
   assert.throws(() =>
     createBuildConfig({ siteUrl: "https://example.com/?token=value" }),
   );
   assert.equal(
     createBuildConfig({
-      siteUrl: "https://bluewings.photo/",
-      customDomain: "bluewings.photo",
+      siteUrl: publicUrl,
+      customDomain: "app.bluewings.photo",
     }).pathFor("/privacy/"),
     "/privacy/",
   );
 });
 
-test("every Pages page has working prefixed links, assets and metadata", async () => {
+test("every Pages page has working root links, assets and custom-domain metadata", async () => {
   const pages = (await readdir(root, { recursive: true })).filter((name) =>
     name.endsWith(".html"),
   );
@@ -63,7 +67,8 @@ test("every Pages page has working prefixed links, assets and metadata", async (
     }
     if (name.includes("download")) {
       const routePlatform =
-        name.match(/download\/(ios|android|windows)\//)?.[1] || "auto";
+        name.replaceAll("\\", "/").match(/download\/(ios|android|windows)\//)?.[1] ||
+        "auto";
       assert.ok(
         html.includes(`data-download-platform="${routePlatform}"`),
         name,
@@ -75,8 +80,8 @@ test("every Pages page has working prefixed links, assets and metadata", async (
     await access(join(root, "assets", relative));
 });
 
-test("Pages keeps the tested redirect script, legal files and AdMob record with no CNAME", async () => {
-  await assert.rejects(readFile(join(root, "CNAME")), { code: "ENOENT" });
+test("Pages keeps the tested redirect script, legal files, AdMob record and custom CNAME", async () => {
+  assert.equal(await readFile(join(root, "CNAME"), "utf8"), "app.bluewings.photo\n");
   await access(join(root, ".nojekyll"));
   assert.equal(
     await readFile(join(root, "app-ads.txt"), "utf8"),
@@ -100,9 +105,8 @@ test("Pages keeps the tested redirect script, legal files and AdMob record with 
       `${publicUrl}sitemap.xml`,
     ),
   );
-  assert.ok(
-    !(await readFile(join(root, "sitemap.xml"), "utf8")).includes(
-      "https://bluewings.photo",
-    ),
-  );
+  const sitemap = await readFile(join(root, "sitemap.xml"), "utf8");
+  const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)];
+  assert.ok(locations.length > 0);
+  for (const [, location] of locations) assert.ok(location.startsWith(publicUrl));
 });

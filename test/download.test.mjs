@@ -230,7 +230,7 @@ test("every public route has pre-rendered content and sharing metadata", async (
       assert.match(html, /<meta property="og:title"/);
       assert.match(
         html,
-        /<meta property="og:image" content="https:\/\/bluewings.photo\/assets\/app-icon.png"/,
+        /<meta property="og:image" content="https:\/\/app\.bluewings\.photo\/assets\/app-icon.png"/,
       );
       assert.match(html, /name="twitter:card"/);
       for (const [key, store] of Object.entries(stores)) {
@@ -253,7 +253,7 @@ test("every public route has pre-rendered content and sharing metadata", async (
       assert.ok(html.includes("/assets/badges/google-play-"));
       assert.ok(html.includes("/assets/badges/microsoft-store-"));
     }
-  assert.equal(site.origin, "https://bluewings.photo");
+  assert.equal(site.origin, "https://app.bluewings.photo");
 });
 
 test("AdMob sees the exact plain-text account record at the root", async () => {

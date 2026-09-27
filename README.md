@@ -2,9 +2,9 @@
 
 The public website for Blue Photo: a photo archive for Suwon Samsung supporters.
 
-**GitHub Pages:** https://dusskapark.github.io/blue-photo-website/
+**Production address:** https://app.bluewings.photo/
 
-The account's existing user-site domain currently redirects that address to https://api.metadata.co.kr/blue-photo-website/. This repository has no custom domain configured; the account-level setting has not been changed.
+Hosted publicly on GitHub Pages from `tg995115/blue-photo-website`. The production build uses the custom domain at the site root. DNS and HTTPS setup are described in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 This repository contains only the website. It does not contain the iOS, Android or Windows applications, the catalog backend, or their Git history.
 
@@ -37,11 +37,11 @@ yarn test:pages
 yarn preview:pages
 ```
 
-The Pages preview is `http://127.0.0.1:4174/blue-photo-website/`. `dist-pages/` includes the `/blue-photo-website/` prefix in links, assets, language routes and sharing metadata. Only the contents of that directory are deployed. See [DEPLOYMENT.md](DEPLOYMENT.md).
+The Pages preview is `http://127.0.0.1:4174/`. `dist-pages/` contains root-relative links and assets, sharing metadata for `https://app.bluewings.photo/`, and an explicit `CNAME`. Only the contents of that directory are deployed. See [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Routes
 
-Paths below are relative to the site root; add `/blue-photo-website` on the default GitHub Pages domain.
+Paths below are relative to `https://app.bluewings.photo/`.
 
 | Route | Purpose |
 | --- | --- |

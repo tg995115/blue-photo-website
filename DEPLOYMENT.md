@@ -2,13 +2,14 @@
 
 ## Current configuration
 
-- Repository: `dusskapark/blue-photo-website` (public).
+- Repository: `tg995115/blue-photo-website` (public).
 - Source branch: `main`.
 - Built static branch: `codex/github-pages`, directory `/`.
-- Default URL: `https://dusskapark.github.io/blue-photo-website/`.
-- Repository custom domain: none. The user will request domain connection separately.
-- The account's existing user-site domain is `api.metadata.co.kr`. GitHub automatically redirects the default address to `https://api.metadata.co.kr/blue-photo-website/`. This is inherited behavior, not a newly configured domain. The account-level setting is unchanged.
-- HTTPS is enforced for this Pages site.
+- Default URL: `https://tg995115.github.io/blue-photo-website/`.
+- Production custom domain: `app.bluewings.photo`.
+- DNS management: Dotname Korea → DNS 레코드 설정 → `bluewings.photo`. The authoritative nameservers are `jasmine.ns.cloudflare.com` and `miles.ns.cloudflare.com`.
+- DNS record: `CNAME app -> tg995115.github.io`, DNS only (not proxied).
+- Enforce HTTPS after GitHub provisions the certificate for the custom domain.
 
 Build and test locally before publishing:
 
@@ -21,25 +22,25 @@ yarn build:pages
 yarn test:pages
 ```
 
-Publish only `dist-pages/` to `codex/github-pages`. In Settings → Pages choose **Deploy from a branch**, `codex/github-pages`, `/ (root)`. Do not publish the source branch directly. Keep `.nojekyll`, the route directories, assets, legal files and `app-ads.txt`. There is no CNAME in the initial build.
+Publish only `dist-pages/` to `codex/github-pages`. In Settings → Pages choose **Deploy from a branch**, `codex/github-pages`, `/ (root)`. Do not publish the source branch directly. Keep `.nojekyll`, `CNAME`, the route directories, assets, legal files and `app-ads.txt`. `CNAME` must contain `app.bluewings.photo`.
 
 GitHub's built-in Pages publication job can run when the static branch changes. No hosted application test matrix or push-triggered source build workflow is configured.
 
 After a deployment, verify the home page, English page, three platform-specific paths, legal documents, raw downloads and `app-ads.txt` over public HTTPS. Check the Pages build status rather than treating a branch push as a successful deployment.
 
-## Later domain connection
+## Custom domain connection
 
-The proposed future domain is `bluewings.photo`. Keep the existing `suwon.bluewings.photo` Tistory blog intact. When the user requests domain connection, produce a root-path build with an explicit CNAME:
+The user requested `app.bluewings.photo`. Keep the existing `suwon.bluewings.photo` Tistory blog and other DNS records intact. `yarn build:pages` produces this root-path build with an explicit CNAME:
 
 ```sh
-node scripts/build.mjs --site-url https://bluewings.photo/ --custom-domain bluewings.photo
+node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages
 ```
 
-Publish that `dist/` output, configure the GitHub custom domain, and only then complete DNS and HTTPS. The root build replaces the GitHub subpath build; do not serve `/blue-photo-website/` asset paths at a custom-domain root.
+Publish that `dist-pages/` output and configure the GitHub custom domain before adding the CNAME in Dotname Korea. Enter `app` as the subdomain and `tg995115.github.io` as the target, without a URL scheme or repository path. Check the authoritative DNS response after saving. Then enforce HTTPS once GitHub provisions its certificate and verify public access on port 443. The root build replaces the GitHub subpath build; do not serve `/blue-photo-website/` asset paths at a custom-domain root.
 
 ## AdMob and existing links
 
-`/blue-photo-website/app-ads.txt` is directly accessible on the default Pages URL, but the store developer website is currently `suwon.bluewings.photo`. Serving the file on GitHub's project path alone does not complete AdMob's hostname-based verification. That needs the later reviewed domain/store configuration.
+`https://app.bluewings.photo/app-ads.txt` is included in this deployment, but the store developer website is currently `suwon.bluewings.photo`. Deploying this site alone does not change store metadata or complete AdMob's hostname-based verification. That needs a separate domain/store configuration review.
 
 The old shared link `https://go.sqd.link/42eb4` is not changed by publishing this repository. iPhone/iPad, Android and Windows identify the same store apps. The old link sends Mac to App Store and Linux to the blog; this site leaves those devices on its store chooser.
 

@@ -1,5 +1,5 @@
 export const site = {
-  origin: "https://bluewings.photo",
+  origin: "https://app.bluewings.photo",
   name: "Blue Photo",
   archive: "https://suwon.bluewings.photo/",
   privacy: "/privacy/",

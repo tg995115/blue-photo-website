@@ -9,10 +9,10 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "build:pages": "node scripts/build.mjs --site-url https://dusskapark.github.io/blue-photo-website/ --out-dir dist-pages",
+    "build:pages": "node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages",
     "dev": "node scripts/dev.mjs",
     "preview": "node scripts/serve.mjs",
-    "preview:pages": "node scripts/serve.mjs --dir dist-pages --base /blue-photo-website --port 4174",
+    "preview:pages": "node scripts/serve.mjs --dir dist-pages --port 4174",
     "test:pages": "node --test test/pages-build.test.mjs",
     "test": "node --test test/download.test.mjs"
   },
