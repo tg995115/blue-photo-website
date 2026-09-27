@@ -9,7 +9,7 @@
 - Production custom domain: `app.bluewings.photo`.
 - DNS management: Dotname Korea → DNS 레코드 설정 → `bluewings.photo`. The authoritative nameservers are `jasmine.ns.cloudflare.com` and `miles.ns.cloudflare.com`.
 - DNS record: `CNAME app -> tg995115.github.io`, DNS only (not proxied).
-- Enforce HTTPS after GitHub provisions the certificate for the custom domain.
+- HTTPS is enforced for this Pages site. The custom-domain certificate is approved, and HTTP requests redirect to HTTPS.
 
 Build and test locally before publishing:
 
