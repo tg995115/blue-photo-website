@@ -1,0 +1,1 @@
+var o=document.querySelector("[data-promo-code]"),e=document.querySelector("[data-promo-copy]"),t=document.querySelector("[data-promo-copy-status]");o&&e&&t&&navigator.clipboard?.writeText&&(e.hidden=!1,e.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(o.dataset.promoCode),t.textContent=t.dataset.success}catch{t.textContent=t.dataset.failure}}));
