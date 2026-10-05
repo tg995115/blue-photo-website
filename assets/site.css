@@ -489,11 +489,6 @@ small {
   max-width: 900px;
   padding-block: 28px 72px;
 }
-.website-analytics-notice {
-  border-top: 1px solid var(--line);
-  margin-top: 48px;
-  padding-top: 10px;
-}
 .legal-toolbar {
   display: flex;
   justify-content: space-between;
