@@ -1,6 +1,6 @@
 # Blue Photo Privacy Policy
 
-**Version:** 1.1
+**Version:** 1.2
 
 **Effective date:** October 5, 2026
 
@@ -29,6 +29,7 @@
 | Notifications | iOS remote notification permission and preferences, installation information, app version, locale, time zone, and protected Apple Push Notification service token. Android notification permission and preference and Windows operations-notification preference remain on the relevant device |
 | Technical information | IP address, request time and identifier, request method and path without the query string, response status, error code, and security events |
 | Website analytics | On the official website, Google Analytics 4 may process visited page URLs (which may include query strings), referring pages, visit and store-exit times, browser and device information, and cookies or similar identifiers. Google may process IP addresses. The store-exit event separately sent by Blue Photo includes the platform (ios, android, or windows) and the type of exit, but no Account ID or purchase token |
+| App analytics | In the iOS and Android apps, Google Analytics for Firebase processes app-open, screen, feature-action and fixed deep-link route events. The SDK uses an app-instance identifier and may process device and app details, approximate location derived from a masked IP address, the Android advertising ID, and automatically measured purchase or subscription events. Blue Photo's custom analytics events do not send raw deep-link URLs, search terms, photo IDs, Account IDs, draft IDs, or purchase tokens |
 | Advertising information | Google Mobile Ads may process IP address, approximate location, device or advertising identifiers, ad and app interactions, diagnostics, and consent choices |
 | Support | Information included in a question, privacy request, or support message |
 | On-device data | Theme and notification settings, recent searches in current app memory, catalog and image caches, protected session credentials, and account-scoped photo preferences or pending history may be stored on the device |
@@ -47,6 +48,7 @@
 | Notifications | Deliver iOS remote notifications that the user has enabled and maintain device-local notification choices on Android and Windows |
 | Safety and reliability | Protect Accounts, detect misuse, troubleshoot errors, maintain backups, and improve Service stability |
 | Website analytics | Measure page visits and departures to app stores to understand and improve use of the official website |
+| App analytics | Measure aggregate use of app screens, photo actions, Storyboard and deep-link routes to improve navigation and reliability |
 | Support and legal compliance | Respond to requests, resolve disputes, enforce the Terms, and comply with lawful obligations |
 
 ## 4. Advertising and Premium
@@ -68,7 +70,7 @@
 | Apple | Sign in with Apple, App Store subscription verification, refunds, and iOS push notifications |
 | Google Play and Google services | Google sign-in, Android subscription verification, refunds, and related platform services |
 | Google AdMob and User Messaging Platform | Advertising, privacy choices, reporting, and invalid-traffic prevention |
-| Google Analytics 4 | Analysis of official website visits and store exits. Google may process the website analytics information above under its Privacy Policy: https://policies.google.com/privacy |
+| Google Analytics 4 | Analysis of official website visits, store exits, and iOS and Android app events. Google may process the website and app analytics information above under its Privacy Policy: https://policies.google.com/privacy |
 | OpenAI | Administrator-only assistance with archive photo metadata. This may include an approved display photo and limited photo metadata, but not Blue Photo user Accounts, profiles, Favorites, Downloads, or HD history |
 | Kakao/Tistory | Display of Blue Photo notices and notice images |
 | Government or regulatory authorities; Service successors | When disclosure is reasonably necessary to comply with law, protect users or the Service, or transfer responsibility for the Service |
