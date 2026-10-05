@@ -69,7 +69,7 @@ The iOS button opens the official Apple redemption URL. Android visitors can cop
 
 ## Website analytics
 
-The single GA4 web stream for the official website uses measurement ID `G-8LWN209BF9`. `yarn build:pages` includes the tag for the production domain; the generic `yarn build` remains untagged for local previews. The Korean and English privacy pages include a website-specific analytics notice below the preserved, source-backed policy text.
+The single GA4 web stream for the official website uses measurement ID `G-8LWN209BF9`. `yarn build:pages` includes the tag for the production domain; the generic `yarn build` remains untagged for local previews. The Korean and English Privacy Policy documents are version 1.1 and disclose website analytics in their collection, use, sharing, and choice sections.
 
 GA4 records page views and a `store_exit` event when a visitor leaves for a reviewed App Store, Google Play, or Microsoft Store destination. The event has `platform` (`ios`, `android`, or `windows`) and `source` (`download_auto`, `download_manual`, or `promo`). Register `platform` as an event-scoped custom dimension in GA4 to break down reports by store. The custom event does not include a promo code or destination URL. Automatic outbound-click measurement configured in the GA4 stream is separate from this custom event and should be reviewed before publishing campaign links.
 
@@ -80,11 +80,11 @@ The redirect waits at most 700 ms for the analytics callback, then opens the sto
 - `src/site.mjs`: Korean/English copy and reviewed store destinations.
 - `src/render.jsx`, `src/site.css`: structure and appearance.
 - `src/gradient.jsx`: the bounded, optional animated background.
-- `public/legal/`: reviewed legal documents; do not silently rewrite clauses or translations.
+- `public/legal/`: versioned legal documents; record each revision in `legal-revisions.json` and `LEGAL_CHANGELOG.md`.
 - `public/app-ads.txt`: the shared Android/iOS AdMob account record.
 - `src/build-config.mjs`: site origin, path prefix and explicit custom-domain handling.
 
-The footer links to locally served documents. `legal-sources.json` records the original public URLs and integrity hashes. All four legal article bodies were checked against the published text, ignoring formatting/whitespace only. The original Korean terms include `gks` in section 2; it is preserved rather than silently corrected. Legal pages require no client JavaScript.
+The footer links to locally served documents. `legal-sources.json` preserves the original version 1.0 public URLs and integrity hashes. `legal-revisions.json` records the current version 1.1 Privacy Policy hashes, effective date, and original source commit; the Terms remain at version 1.0. The original Korean terms include `gks` in section 2; it is preserved rather than silently corrected. The generic local build's legal pages require no client JavaScript.
 
 `asset-sources.json` records the app icon, public App Store screenshots and official store badges. The current sharing thumbnail is the existing 1024×1024 Blue Photo icon, configured in `site.socialImage`. Update its metadata dimensions if replacing it with a differently sized image.
 

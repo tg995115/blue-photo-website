@@ -1,8 +1,8 @@
 # Blue Photo Privacy Policy
 
-**Version:** 1.0
+**Version:** 1.1
 
-**Effective date:** September 8, 2026
+**Effective date:** October 5, 2026
 
 ## 1. About this Policy
 
@@ -12,7 +12,7 @@
 | Service provider and Data Protection Officer (“Operator”) | JooHyung Park (박주형) |
 | Based in | Singapore |
 | Privacy contact by mail | JooHyung Park (박주형), 6 Hillview Rise, Singapore 667980 |
-| Website | https://suwon.bluewings.photo |
+| Website | https://app.bluewings.photo (official site), https://suwon.bluewings.photo (notices and blog) |
 | Brand and photo provider | Hong Junki (홍준기) supplies the Blue Photo brand and archive photographs for use in the Service |
 | Purpose of this Policy | To explain what information Blue Photo collects, how it is used and shared, and the choices available to users |
 | Governing language | This English Privacy Policy is the governing version. The Korean version is a translation for convenience. If they differ, English prevails to the extent permitted by applicable law |
@@ -28,6 +28,7 @@
 | Premium | Store, product, purchase token or transaction reference, subscription status, renewal or expiry status, and verification timestamps. Blue Photo does not receive full card or bank-account details |
 | Notifications | iOS remote notification permission and preferences, installation information, app version, locale, time zone, and protected Apple Push Notification service token. Android notification permission and preference and Windows operations-notification preference remain on the relevant device |
 | Technical information | IP address, request time and identifier, request method and path without the query string, response status, error code, and security events |
+| Website analytics | On the official website, Google Analytics 4 may process visited page URLs (which may include query strings), referring pages, visit and store-exit times, browser and device information, and cookies or similar identifiers. Google may process IP addresses. The store-exit event separately sent by Blue Photo includes the platform (ios, android, or windows) and the type of exit, but no Account ID or purchase token |
 | Advertising information | Google Mobile Ads may process IP address, approximate location, device or advertising identifiers, ad and app interactions, diagnostics, and consent choices |
 | Support | Information included in a question, privacy request, or support message |
 | On-device data | Theme and notification settings, recent searches in current app memory, catalog and image caches, protected session credentials, and account-scoped photo preferences or pending history may be stored on the device |
@@ -45,6 +46,7 @@
 | Advertising | Show contextual, non-personalized ads to eligible free users, apply consent choices, limit frequency, report performance, and prevent invalid traffic |
 | Notifications | Deliver iOS remote notifications that the user has enabled and maintain device-local notification choices on Android and Windows |
 | Safety and reliability | Protect Accounts, detect misuse, troubleshoot errors, maintain backups, and improve Service stability |
+| Website analytics | Measure page visits and departures to app stores to understand and improve use of the official website |
 | Support and legal compliance | Respond to requests, resolve disputes, enforce the Terms, and comply with lawful obligations |
 
 ## 4. Advertising and Premium
@@ -66,6 +68,7 @@
 | Apple | Sign in with Apple, App Store subscription verification, refunds, and iOS push notifications |
 | Google Play and Google services | Google sign-in, Android subscription verification, refunds, and related platform services |
 | Google AdMob and User Messaging Platform | Advertising, privacy choices, reporting, and invalid-traffic prevention |
+| Google Analytics 4 | Analysis of official website visits and store exits. Google may process the website analytics information above under its Privacy Policy: https://policies.google.com/privacy |
 | OpenAI | Administrator-only assistance with archive photo metadata. This may include an approved display photo and limited photo metadata, but not Blue Photo user Accounts, profiles, Favorites, Downloads, or HD history |
 | Kakao/Tistory | Display of Blue Photo notices and notice images |
 | Government or regulatory authorities; Service successors | When disclosure is reasonably necessary to comply with law, protect users or the Service, or transfer responsibility for the Service |
@@ -82,7 +85,7 @@
 | Account deletion | A deletion request starts a 30-day recovery period. After that period, Account information and Account activity are deleted when required external-provider and security steps are complete, except information that must be retained for legal, fraud-prevention, or backup-protection purposes |
 | Deletion protection record | After permanent deletion is authorised, Blue Photo retains a non-reversible Account fingerprint and quarantined Identity Platform UID hash for 35 days so a database backup cannot restore a deleted Account |
 | Device information | App tokens, settings, and cached images may remain on the device until removed by the app, the user, Account deletion, or the operating system |
-| Provider records | Apple, Google, AdMob, OpenAI, and other providers retain information according to their own policies |
+| Provider records | Apple, Google, AdMob, Google Analytics, OpenAI, and other providers retain information according to their own policies |
 
 ## 7. User choices and requests
 
@@ -91,6 +94,7 @@
 | Profile and Favorites | Update profile information or remove Favorites in the app |
 | Notifications | Change notification permission in device settings and available preferences in the app |
 | Advertising | Use Ad Privacy Settings where shown, device advertising controls, or Premium to remove Blue Photo ads |
+| Website analytics | Restrict cookies in your browser or use the Google Analytics opt-out tool: https://tools.google.com/dlpage/gaoptout |
 | Subscription | Manage cancellation and refunds through the Apple App Store or Google Play. Deleting the app or Blue Photo Account does not cancel a store subscription |
 | Access, correction, or deletion | Use available Account settings or write to the Operator at 6 Hillview Rise, Singapore 667980. Subject to legal exceptions, a user may request access to personal data and information about its use or disclosure during the preceding 12 months, correction of an error or omission, or deletion. Identity verification may be required |
 | Withdrawal of consent | Contact the Operator or use the relevant app or device setting. Some features may stop working when the information is necessary to provide them |
@@ -111,4 +115,4 @@
 | Changes | Blue Photo may update this Policy and will post the current version on the website or in the app. Material changes will be highlighted where reasonably practicable |
 | Data breach notice | If a personal data breach is notifiable under applicable law, Blue Photo will notify the Singapore Personal Data Protection Commission and affected individuals as required |
 | Data Protection Officer | JooHyung Park (박주형), 6 Hillview Rise, Singapore 667980 |
-| Questions or complaints | Write to the Data Protection Officer at the address above. A user may also contact the Singapore Personal Data Protection Commission where applicable. The Service website is https://suwon.bluewings.photo |
+| Questions or complaints | Write to the Data Protection Officer at the address above. A user may also contact the Singapore Personal Data Protection Commission where applicable. The official Service website is https://app.bluewings.photo |

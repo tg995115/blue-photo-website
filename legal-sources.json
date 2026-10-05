@@ -1,6 +1,6 @@
 {
   "retrievedAt": "2026-09-26T17:22:07.953192+00:00",
-  "policy": "Preserve published wording, effective dates and links; separate languages only. No legal revisions or new translation.",
+  "policy": "Records the original version 1.0 published sources. The current version 1.1 privacy revision is tracked in legal-revisions.json; the terms remain unchanged.",
   "documents": [
     {
       "file": "public/legal/privacy-policy.ko.md",
@@ -10,7 +10,7 @@
       "fileSha256": "fb4f7b9b8b4df467c8e8106bc8ba9bcb70e2a6af90d080147821ac6b2a38c77b",
       "version": "1.0",
       "effectiveDate": "2026-09-08",
-      "notes": "Published text matches the existing repository document after formatting and whitespace normalization.",
+      "notes": "Original version 1.0 Korean privacy text; the current version 1.1 revision is tracked separately in legal-revisions.json.",
       "publishedTextSha256": "30da96676dad032f495eff0eac8e091d74cb836af06ed0f07a2beb65620205d2",
       "normalizedCharacters": 3972,
       "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
@@ -23,7 +23,7 @@
       "fileSha256": "67d778189a03ef31fe16da2a0385197d07fc6afd5cb9b1cb17ed8ce168393bbb",
       "version": "1.0",
       "effectiveDate": "2026-09-08",
-      "notes": "Published text matches the existing repository document after formatting and whitespace normalization.",
+      "notes": "Original version 1.0 English privacy text; the current version 1.1 revision is tracked separately in legal-revisions.json.",
       "publishedTextSha256": "9f3b45dea5db95d91007d04572182d1bb11d76ccb5486c3244314b450421dbf8",
       "normalizedCharacters": 9011,
       "normalization": "Decoded visible article text, with all whitespace removed; no wording or punctuation changes."
