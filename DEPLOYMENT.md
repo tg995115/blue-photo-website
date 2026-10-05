@@ -7,7 +7,7 @@
 - Built static branch: `codex/github-pages`, directory `/`.
 - Default URL: `https://tg995115.github.io/blue-photo-website/`.
 - Production custom domain: `app.bluewings.photo`.
-- Production Pages build includes the GA4 web tag `G-8LWN209BF9` and version 1.1 Korean and English privacy documents covering website analytics. Revision hashes are in `legal-revisions.json`.
+- Production Pages build includes the GA4 web tag `G-8LWN209BF9` and version 1.2 Korean and English privacy documents covering website and native app analytics. Revision hashes are in `legal-revisions.json`.
 - DNS management: Dotname Korea → DNS 레코드 설정 → `bluewings.photo`. The authoritative nameservers are `jasmine.ns.cloudflare.com` and `miles.ns.cloudflare.com`.
 - DNS record: `CNAME app -> tg995115.github.io`, DNS only (not proxied).
 - HTTPS is enforced for this Pages site. The custom-domain certificate is approved, and HTTP requests redirect to HTTPS.

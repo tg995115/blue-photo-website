@@ -4,28 +4,34 @@
     {
       "file": "public/legal/privacy-policy.ko.md",
       "language": "ko",
-      "version": "1.1",
+      "version": "1.2",
       "effectiveDate": "2026-10-05",
-      "previousVersion": "1.0",
-      "previousSourceCommit": "79aaa7b13602ccce9291fc164b24ca2c3ea7a305",
-      "previousFileSha256": "fb4f7b9b8b4df467c8e8106bc8ba9bcb70e2a6af90d080147821ac6b2a38c77b",
-      "fileSha256": "2dec2fe7ce2d6aab9347754c6b95311c78cba27c233378950e31467b9d900a68",
-      "renderedTextSha256": "c532c12a4e86934d41459b80ec32794ffc3611aba0c11980b555247f4511adf7",
-      "normalizedCharacters": 4465,
-      "summary": "Added GA4 website data collection, use, Google sharing and browser choices; identified the official website."
+      "previousVersion": "1.1",
+      "previousSourceCommit": "deab66557e8dd4d92b8e88227a91da3d962c891f",
+      "previousFileSha256": "2dec2fe7ce2d6aab9347754c6b95311c78cba27c233378950e31467b9d900a68",
+      "originalVersion": "1.0",
+      "originalSourceCommit": "79aaa7b13602ccce9291fc164b24ca2c3ea7a305",
+      "originalFileSha256": "fb4f7b9b8b4df467c8e8106bc8ba9bcb70e2a6af90d080147821ac6b2a38c77b",
+      "fileSha256": "31c384a36149c6b841a6343086ea2640666f4c7e97a967ef6b93d25ea29a4042",
+      "renderedTextSha256": "0762eaec6b673d08edee017d32cba0ef04dd2e7550686ec0bdf92d901f8d29eb",
+      "normalizedCharacters": 4753,
+      "summary": "Added iOS and Android Firebase app analytics data collection, use and Google sharing; kept website analytics and the effective date."
     },
     {
       "file": "public/legal/privacy-policy.en.md",
       "language": "en",
-      "version": "1.1",
+      "version": "1.2",
       "effectiveDate": "2026-10-05",
-      "previousVersion": "1.0",
-      "previousSourceCommit": "79aaa7b13602ccce9291fc164b24ca2c3ea7a305",
-      "previousFileSha256": "67d778189a03ef31fe16da2a0385197d07fc6afd5cb9b1cb17ed8ce168393bbb",
-      "fileSha256": "267e88f49717c0c951428be1c29b34739428ce8e815920e89c321f0f0e277df6",
-      "renderedTextSha256": "0bf981b3c9ed89fc62fc41e006ad17eaad2dc6a963ea7a783501050abd3e408b",
-      "normalizedCharacters": 9844,
-      "summary": "Added GA4 website data collection, use, Google sharing and browser choices; identified the official website."
+      "previousVersion": "1.1",
+      "previousSourceCommit": "deab66557e8dd4d92b8e88227a91da3d962c891f",
+      "previousFileSha256": "267e88f49717c0c951428be1c29b34739428ce8e815920e89c321f0f0e277df6",
+      "originalVersion": "1.0",
+      "originalSourceCommit": "79aaa7b13602ccce9291fc164b24ca2c3ea7a305",
+      "originalFileSha256": "67d778189a03ef31fe16da2a0385197d07fc6afd5cb9b1cb17ed8ce168393bbb",
+      "fileSha256": "bc619d61ff4043aac13e9fa1b5d75a32d313eb03cc08018dacfb6c3e9bd4baba",
+      "renderedTextSha256": "963112c907f2166ef85d0068a3a4304aaf1be8a5e08e131c614ccbfefd802f05",
+      "normalizedCharacters": 10427,
+      "summary": "Added iOS and Android Firebase app analytics data collection, use and Google sharing; kept website analytics and the effective date."
     }
   ]
 }

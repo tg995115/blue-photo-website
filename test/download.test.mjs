@@ -26,8 +26,9 @@ test("legal documents match their versioned source or revision hashes", async ()
     const revision = revisionManifest.revisions.find((item) => item.file === doc.file);
     if (kind === "privacy") {
       assert.ok(revision);
-      assert.equal(revision.previousVersion, doc.version);
-      assert.equal(revision.previousFileSha256, doc.fileSha256);
+      assert.equal(revision.originalVersion, doc.version);
+      assert.equal(revision.originalFileSha256, doc.fileSha256);
+      assert.equal(revision.previousVersion, "1.1");
     } else assert.equal(revision, undefined);
     const expected = revision || doc;
     const base = doc.language === "en" ? "en/" : "";
