@@ -7,6 +7,7 @@
 - Built static branch: `codex/github-pages`, directory `/`.
 - Default URL: `https://tg995115.github.io/blue-photo-website/`.
 - Production custom domain: `app.bluewings.photo`.
+- Production Pages build includes the GA4 web tag `G-8LWN209BF9` and a website analytics notice on both privacy pages.
 - DNS management: Dotname Korea → DNS 레코드 설정 → `bluewings.photo`. The authoritative nameservers are `jasmine.ns.cloudflare.com` and `miles.ns.cloudflare.com`.
 - DNS record: `CNAME app -> tg995115.github.io`, DNS only (not proxied).
 - HTTPS is enforced for this Pages site. The custom-domain certificate is approved, and HTTP requests redirect to HTTPS.
@@ -33,7 +34,7 @@ After a deployment, verify the home page, English page, three platform-specific 
 The user requested `app.bluewings.photo`. Keep the existing `suwon.bluewings.photo` Tistory blog and other DNS records intact. `yarn build:pages` produces this root-path build with an explicit CNAME:
 
 ```sh
-node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages
+node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages --ga-measurement-id G-8LWN209BF9
 ```
 
 Publish that `dist-pages/` output and configure the GitHub custom domain before adding the CNAME in Dotname Korea. Enter `app` as the subdomain and `tg995115.github.io` as the target, without a URL scheme or repository path. Check the authoritative DNS response after saving. Then enforce HTTPS once GitHub provisions its certificate and verify public access on port 443. The root build replaces the GitHub subpath build; do not serve `/blue-photo-website/` asset paths at a custom-domain root.

@@ -112,6 +112,27 @@ export function LegalDocument({ document, lang, pathFor }) {
           );
         })}
       </article>
+      {markdown && <WebsiteAnalyticsNotice lang={lang} />}
     </main>
+  );
+}
+
+function WebsiteAnalyticsNotice({ lang }) {
+  return (
+    <section className="legal-content website-analytics-notice">
+      {lang === "ko" ? (
+        <>
+          <h2>공식 웹사이트 분석 안내</h2>
+          <p>공식 웹사이트(app.bluewings.photo)는 Google Analytics 4로 방문 페이지와 앱스토어 이동을 집계합니다. Google은 이 과정에서 IP 주소, 브라우저·기기 정보, 쿠키 또는 유사 식별자, 방문·이동 페이지 주소와 이용 시각 등을 처리할 수 있습니다.</p>
+          <p>Blue Photo가 별도로 보내는 스토어 이동 이벤트에는 iOS·Android·Windows 플랫폼과 이동 경로 구분값이 포함됩니다. 웹사이트 이용 현황과 앱 다운로드 경로를 파악하고 사이트를 개선하는 데 사용합니다. 브라우저에서 쿠키를 제한하거나 Google의 <a href="https://tools.google.com/dlpage/gaoptout">Analytics 차단 도구</a>를 사용할 수 있습니다. Google의 처리에 관한 자세한 내용은 <a href="https://policies.google.com/privacy">Google 개인정보처리방침</a>을 참고하세요.</p>
+        </>
+      ) : (
+        <>
+          <h2>Official website analytics notice</h2>
+          <p>The official website (app.bluewings.photo) uses Google Analytics 4 to measure page visits and departures to app stores. Google may process IP address, browser and device information, cookies or similar identifiers, visited and destination page URLs, and usage time.</p>
+          <p>The store-exit event sent separately by Blue Photo contains the iOS, Android, or Windows platform and the type of exit. We use these measurements to understand website use and app download paths and to improve the site. You can restrict cookies in your browser or use the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out tool</a>. See the <a href="https://policies.google.com/privacy">Google Privacy Policy</a> for details of Google's processing.</p>
+        </>
+      )}
+    </section>
   );
 }

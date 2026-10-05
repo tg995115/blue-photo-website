@@ -9,12 +9,12 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "build:pages": "node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages",
+    "build:pages": "node scripts/build.mjs --site-url https://app.bluewings.photo/ --custom-domain app.bluewings.photo --out-dir dist-pages --ga-measurement-id G-8LWN209BF9",
     "dev": "node scripts/dev.mjs",
     "preview": "node scripts/serve.mjs",
     "preview:pages": "node scripts/serve.mjs --dir dist-pages --port 4174",
     "test:pages": "node --test test/pages-build.test.mjs",
-    "test": "node --test test/download.test.mjs"
+    "test": "node --test test/analytics.test.mjs test/download.test.mjs test/promo.test.mjs"
   },
   "dependencies": {
     "@paper-design/shaders-react": "0.0.81",

@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { copy, site, stores } from "./site.mjs";
+import { promotions, validatePromotions } from "./promotions.mjs";
 import { LegalDocument, readLegal } from "./legal.jsx";
 import { createBuildConfig } from "./build-config.mjs";
 
@@ -10,6 +11,7 @@ const buildConfig = createBuildConfig({
   siteUrl: process.env.BLUE_PHOTO_SITE_URL,
   outputDir: process.env.BLUE_PHOTO_OUTPUT_DIR,
   customDomain: process.env.BLUE_PHOTO_CUSTOM_DOMAIN,
+  gaMeasurementId: process.env.BLUE_PHOTO_GA_MEASUREMENT_ID,
 });
 const { pathFor, absoluteUrl, outputDir } = buildConfig;
 
@@ -40,6 +42,8 @@ function StoreLinks({ lang, selected = null, direct = false }) {
           href={
             direct ? store.url : pathFor(`${prefix(lang)}/download/${key}/`)
           }
+          data-store-platform={direct ? key : undefined}
+          data-store-source={direct ? "download_manual" : undefined}
           aria-label={`${store.platform} — ${store.label}: ${t.open}`}
         >
           <img
@@ -237,6 +241,70 @@ function Download({ lang, platform }) {
   );
 }
 
+function Promotion({ lang, promotion }) {
+  const t = copy[lang];
+  if (!promotion)
+    return (
+      <main id="main" className="download-page container">
+        <h1>{t.promoMissingTitle}</h1>
+        <p>{t.promoMissingBody}</p>
+        <a className="button primary" href={pathFor(`${prefix(lang)}/`)}>
+          {t.back}
+        </a>
+      </main>
+    );
+
+  return (
+    <main id="main" className="promo-page container">
+      <p className="eyebrow">{t.promoEyebrow}</p>
+      <h1>{t.promoFreeTitle}</h1>
+      <p className="promo-intro">{t.promoBody}</p>
+      <div className="promo-platforms">
+        <section className="promo-platform" aria-labelledby="promo-ios">
+          <h2 id="promo-ios">{t.promoIos}</h2>
+          <p className="promo-duration">{t.promoAppleFree(promotion.appleFreeMonths)}</p>
+          <p>{t.promoIosBody}</p>
+          <a
+            className="button primary"
+            href={promotion.appleUrl}
+            data-store-platform="ios"
+            data-store-source="promo"
+          >
+            {t.promoIosAction}
+          </a>
+        </section>
+        <section className="promo-platform" aria-labelledby="promo-android">
+          <h2 id="promo-android">{t.promoAndroid}</h2>
+          <p className="promo-duration">{t.promoGoogleFree(promotion.googleFreeDays)}</p>
+          <p>{t.promoAndroidBody}</p>
+          <div className="promo-code" data-promo-code={promotion.googleCode}>
+            <code>{promotion.googleCode}</code>
+            <button type="button" data-promo-copy hidden>
+              {t.promoCopy}
+            </button>
+          </div>
+          <p
+            className="promo-copy-status"
+            data-promo-copy-status
+            data-success={t.promoCopied}
+            data-failure={t.promoCopyFailed}
+            aria-live="polite"
+          />
+          <a
+            className="button primary"
+            href={stores.android.url}
+            data-store-platform="android"
+            data-store-source="promo"
+          >
+            {t.promoAndroidAction}
+          </a>
+        </section>
+      </div>
+      <p className="promo-note">{t.promoRenewal}</p>
+    </main>
+  );
+}
+
 function NotFound({ lang }) {
   const t = copy[lang];
   return (
@@ -256,22 +324,25 @@ function Document({
   route,
   kind = "landing",
   platform = null,
+  promotion = null,
   canonical = route,
   legal = null,
 }) {
   const t = copy[lang];
-  const title = legal
-    ? legal.title
-    : kind === "download"
-      ? `${t.downloadTitle}${platform ? ` — ${stores[platform].platform}` : ""}`
-      : kind === "404"
-        ? `${t.notFound} — Blue Photo`
-        : t.title;
-  const description = legal
-    ? legal.title
-    : kind === "download"
-      ? t.getBody
-      : t.description;
+  let title = t.title;
+  let description = t.description;
+  if (legal) {
+    title = legal.title;
+    description = legal.title;
+  } else if (kind === "download") {
+    title = `${t.downloadTitle}${platform ? ` — ${stores[platform].platform}` : ""}`;
+    description = t.getBody;
+  } else if (kind === "promo") {
+    title = `${promotion ? t.promoFreeTitle : t.promoMissingTitle} — Blue Photo`;
+    description = promotion ? t.promoBody : t.promoMissingBody;
+  } else if (kind === "404") {
+    title = `${t.notFound} — Blue Photo`;
+  }
   const url = absoluteUrl(canonical);
   return (
     <html lang={lang}>
@@ -282,7 +353,9 @@ function Document({
         <meta name="description" content={description} />
         <meta name="theme-color" content="#124cdb" />
         <link rel="canonical" href={url} />
-        {kind === "404" && <meta name="robots" content="noindex" />}
+        {(kind === "404" || (kind === "promo" && !promotion)) && (
+          <meta name="robots" content="noindex" />
+        )}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={site.name} />
         <meta property="og:title" content={title} />
@@ -303,9 +376,26 @@ function Document({
         <link rel="icon" type="image/jpeg" href={asset("app-icon.jpg")} />
         <link rel="apple-touch-icon" href={asset("app-icon.jpg")} />
         <link rel="stylesheet" href={asset("site.css")} />
+        {buildConfig.gaMeasurementId && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${buildConfig.gaMeasurementId}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.bluePhotoAnalyticsEnabled=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config','${buildConfig.gaMeasurementId}');`,
+              }}
+            />
+            <script type="module" src={asset("analytics.js")} />
+          </>
+        )}
         {kind === "landing" && <script type="module" src={asset("hero.js")} />}
         {kind === "download" && (
           <script type="module" src={asset("download.js")} />
+        )}
+        {kind === "promo" && promotion && (
+          <script type="module" src={asset("promo.js")} />
         )}
       </head>
       <body>
@@ -319,6 +409,8 @@ function Document({
           <Landing lang={lang} />
         ) : kind === "download" ? (
           <Download lang={lang} platform={platform} />
+        ) : kind === "promo" ? (
+          <Promotion lang={lang} promotion={promotion} />
         ) : (
           <NotFound lang={lang} />
         )}
@@ -329,11 +421,20 @@ function Document({
 }
 
 export const routes = [];
+validatePromotions(promotions);
 for (const lang of ["ko", "en"]) {
   const base = prefix(lang);
   routes.push({ route: `${base}/`, lang });
   routes.push({ route: `${base}/index/`, lang, canonical: `${base}/` });
   routes.push({ route: `${base}/download/`, lang, kind: "download" });
+  routes.push({ route: `${base}/promo/`, lang, kind: "promo" });
+  for (const promotion of promotions)
+    routes.push({
+      route: `${base}/promo/${promotion.slug}/`,
+      lang,
+      kind: "promo",
+      promotion,
+    });
   for (const kind of ["privacy", "terms"]) {
     routes.push({
       route: `${base}/${kind}/`,

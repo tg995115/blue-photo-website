@@ -401,9 +401,98 @@ small {
 .download-page > .button {
   margin-top: 25px;
 }
+.promo-page {
+  min-height: calc(100svh - 245px);
+  max-width: 1000px;
+  padding-block: 70px 100px;
+}
+.promo-page > h1 {
+  font-size: clamp(36px, 6vw, 56px);
+  letter-spacing: -0.05em;
+  margin: 10px 0 16px;
+}
+.promo-intro,
+.promo-note {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.promo-intro {
+  max-width: 650px;
+}
+.promo-platforms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-block: 36px 24px;
+}
+.promo-platform {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.promo-platform h2 {
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+.promo-platform > p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+.promo-platform .promo-duration {
+  color: var(--blue);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+.promo-platform .button {
+  margin-top: auto;
+}
+.promo-code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7f9ff;
+}
+.promo-code code {
+  font-size: 17px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.promo-code button {
+  color: var(--blue);
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.promo-copy-status {
+  min-height: 1.5em;
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .promo-platforms {
+    grid-template-columns: 1fr;
+  }
+  .promo-page {
+    padding-block: 48px 72px;
+  }
+}
 .legal-page {
   max-width: 900px;
   padding-block: 28px 72px;
+}
+.website-analytics-notice {
+  border-top: 1px solid var(--line);
+  margin-top: 48px;
+  padding-top: 10px;
 }
 .legal-toolbar {
   display: flex;
