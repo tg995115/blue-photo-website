@@ -4,6 +4,7 @@ export function createBuildConfig({
   siteUrl = `${site.origin}/`,
   outputDir = "dist",
   customDomain = "",
+  gaMeasurementId = "",
 } = {}) {
   const url = new URL(siteUrl);
   if (
@@ -22,6 +23,8 @@ export function createBuildConfig({
   const basePath = url.pathname.replace(/\/+$/, "");
   if (!/^(\/[A-Za-z0-9._-]+)*$/.test(basePath))
     throw new Error("Unsupported site base path.");
+  if (gaMeasurementId && !/^G-[A-Z0-9]+$/.test(gaMeasurementId))
+    throw new Error("Invalid GA4 web measurement ID.");
   if (
     customDomain &&
     (customDomain !== url.hostname ||
@@ -43,6 +46,7 @@ export function createBuildConfig({
     basePath,
     outputDir,
     customDomain,
+    gaMeasurementId,
     pathFor,
     absoluteUrl: (path) => `${url.origin}${pathFor(path)}`,
   };

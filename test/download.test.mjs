@@ -5,9 +5,12 @@ import { runInNewContext } from "node:vm";
 import { createHash } from "node:crypto";
 import { detectPlatform, stores, site } from "../src/site.mjs";
 
-test("legal documents retain the published text separately for each language", async () => {
+test("legal documents match their versioned source or revision hashes", async () => {
   const manifest = JSON.parse(
     await readFile(new URL("../legal-sources.json", import.meta.url), "utf8"),
+  );
+  const revisionManifest = JSON.parse(
+    await readFile(new URL("../legal-revisions.json", import.meta.url), "utf8"),
   );
   const entities = { amp: "&", quot: '"', lt: "<", gt: ">", nbsp: " " };
   const decode = (value) =>
@@ -20,6 +23,13 @@ test("legal documents retain the published text separately for each language", a
     );
   for (const doc of manifest.documents) {
     const kind = doc.file.includes("privacy") ? "privacy" : "terms";
+    const revision = revisionManifest.revisions.find((item) => item.file === doc.file);
+    if (kind === "privacy") {
+      assert.ok(revision);
+      assert.equal(revision.previousVersion, doc.version);
+      assert.equal(revision.previousFileSha256, doc.fileSha256);
+    } else assert.equal(revision, undefined);
+    const expected = revision || doc;
     const base = doc.language === "en" ? "en/" : "";
     const html = await readFile(
       new URL(`../dist/${base}${kind}/index.html`, import.meta.url),
@@ -32,18 +42,22 @@ test("legal documents retain the published text separately for each language", a
     const text = decode(body.replace(/<[^>]*>/g, "")).replace(/\s+/g, "");
     assert.equal(
       createHash("sha256").update(text).digest("hex"),
-      doc.publishedTextSha256,
+      revision ? revision.renderedTextSha256 : doc.publishedTextSha256,
     );
-    assert.equal(text.length, doc.normalizedCharacters);
+    assert.equal(text.length, expected.normalizedCharacters);
     for (const [, href] of body.matchAll(/href="([^"]+)"/g)) {
-      assert.match(href, /^https:\/\/suwon\.bluewings\.photo\/?$/);
+      assert.match(
+        href,
+        /^https:\/\/(?:suwon\.bluewings\.photo|app\.bluewings\.photo|policies\.google\.com|tools\.google\.com)(?:\/[^" ]*)?$/,
+      );
     }
     const file = doc.file.replace("public/", "");
     const raw = await readFile(new URL(`../dist/${file}`, import.meta.url));
     assert.equal(
       createHash("sha256").update(raw).digest("hex"),
-      doc.fileSha256,
+      expected.fileSha256,
     );
+    if (revision) assert.ok(html.includes(revision.version));
     assert.ok(html.includes(`href="/${file}"`));
     assert.ok(
       html.includes(`href="/${base}privacy/"`) &&

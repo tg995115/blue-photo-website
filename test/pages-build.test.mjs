@@ -4,6 +4,7 @@ import { readFile, readdir, stat, access } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createBuildConfig } from "../src/build-config.mjs";
+import { promotions } from "../src/promotions.mjs";
 
 const root = fileURLToPath(new URL("../dist-pages/", import.meta.url));
 const publicUrl = "https://app.bluewings.photo/";
@@ -31,6 +32,11 @@ test("build profiles support the repository path without enabling a custom domai
   assert.throws(() =>
     createBuildConfig({ siteUrl: "https://example.com/?token=value" }),
   );
+  assert.throws(() => createBuildConfig({ gaMeasurementId: "G-INVALID<script>" }));
+  assert.equal(
+    createBuildConfig({ gaMeasurementId: "G-8LWN209BF9" }).gaMeasurementId,
+    "G-8LWN209BF9",
+  );
   assert.equal(
     createBuildConfig({
       siteUrl: publicUrl,
@@ -44,9 +50,14 @@ test("every Pages page has working root links, assets and custom-domain metadata
   const pages = (await readdir(root, { recursive: true })).filter((name) =>
     name.endsWith(".html"),
   );
-  assert.equal(pages.length, 17);
+  assert.equal(pages.length, 19 + promotions.length * 2);
   for (const name of pages) {
     const html = await readFile(join(root, name), "utf8");
+    assert.ok(
+      html.includes("googletagmanager.com/gtag/js?id=G-8LWN209BF9"),
+      name,
+    );
+    assert.ok(html.includes("/assets/analytics.js"), name);
     assert.ok(html.includes(`<link rel="canonical" href="${publicUrl}`), name);
     assert.ok(
       html.includes(`<meta property="og:url" content="${publicUrl}`),

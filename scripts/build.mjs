@@ -11,12 +11,14 @@ const { values } = parseArgs({
     "site-url": { type: "string" },
     "out-dir": { type: "string", default: "dist" },
     "custom-domain": { type: "string", default: "" },
+    "ga-measurement-id": { type: "string", default: "" },
   },
 });
 const profile = createBuildConfig({
   siteUrl: values["site-url"],
   outputDir: values["out-dir"],
   customDomain: values["custom-domain"],
+  gaMeasurementId: values["ga-measurement-id"],
 });
 const outDir = profile.outputDir;
 await rm(outDir, { recursive: true, force: true });
@@ -51,6 +53,7 @@ execFileSync(process.execPath, [renderer], {
     BLUE_PHOTO_SITE_URL: profile.siteUrl,
     BLUE_PHOTO_OUTPUT_DIR: outDir,
     BLUE_PHOTO_CUSTOM_DOMAIN: profile.customDomain,
+    BLUE_PHOTO_GA_MEASUREMENT_ID: profile.gaMeasurementId,
   },
 });
 await build({
@@ -75,6 +78,25 @@ await build({
   target: "es2022",
   outfile: `${outDir}/assets/download.js`,
 });
+await build({
+  entryPoints: ["src/promo.mjs"],
+  bundle: true,
+  platform: "browser",
+  format: "esm",
+  minify: true,
+  target: "es2022",
+  outfile: `${outDir}/assets/promo.js`,
+});
+if (profile.gaMeasurementId)
+  await build({
+    entryPoints: ["src/analytics-browser.mjs"],
+    bundle: true,
+    platform: "browser",
+    format: "esm",
+    minify: true,
+    target: "es2022",
+    outfile: `${outDir}/assets/analytics.js`,
+  });
 console.log(
   `Static output: ${outDir}; public URL: ${profile.siteUrl}; custom domain: ${profile.customDomain || "none"}`,
 );
