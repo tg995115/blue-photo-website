@@ -8,6 +8,7 @@ export const slogans = [
   "나의 수원",
   "수원 언제나 우린 너와 함께해",
   "수원 블루윙",
+  "힘을 내라, 수원",
 ];
 
 /** One slogan for a random number in [0, 1); injectable so tests do not depend on chance. */

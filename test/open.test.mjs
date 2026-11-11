@@ -106,10 +106,10 @@ test("the English route is always English and the shared link follows the browse
 });
 
 test("the supporter slogans are the confirmed short shouts, nothing else", () => {
-  assert.deepEqual(slogans, ["우리에겐 승리뿐이다", "나의 수원", "수원 언제나 우린 너와 함께해", "수원 블루윙"]);
+  assert.deepEqual(slogans, ["우리에겐 승리뿐이다", "나의 수원", "수원 언제나 우린 너와 함께해", "수원 블루윙", "힘을 내라, 수원"]);
   for (const slogan of slogans) {
     assert.ok(slogan.length >= 3 && slogan.length <= 20, slogan);
-    assert.match(slogan, /^[가-힣 ]+$/, "plain Korean words only: no markup, digits or punctuation");
+    assert.match(slogan, /^[가-힣 ,]+$/, "plain Korean words and a comma only: no markup, digits or other punctuation");
   }
   for (const excluded of ["이겨라 블루윙", "수원 삼성", "수원 골", "2, 3, 4 수원", "트리콜로", "프렌테", "KEEP THE FAITH"]) {
     assert.ok(!slogans.includes(excluded) && !slogans.some((slogan) => slogan.includes("프렌테")), excluded);
