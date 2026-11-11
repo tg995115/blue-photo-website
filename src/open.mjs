@@ -6,12 +6,19 @@ import {
   parseMemoryId,
   planOpen,
 } from "./open-link.mjs";
+import { pickSlogan } from "./slogans.mjs";
 import { stores } from "./site.mjs";
 
 const language = pageLanguage({ pathname: window.location.pathname, language: navigator.language });
 document.documentElement.lang = language;
 for (const node of document.querySelectorAll("[data-ko]")) {
   node.textContent = language === "ko" ? node.dataset.ko : node.dataset.en;
+}
+
+const slogan = document.querySelector("[data-slogan]");
+if (slogan) {
+  slogan.textContent = pickSlogan();
+  slogan.hidden = false;
 }
 
 const id = parseMemoryId(window.location.search);

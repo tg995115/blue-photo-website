@@ -256,6 +256,8 @@ function OpenInApp({ lang }) {
       <h1 data-ko="Blue Photo 앱으로 이동" data-en="Opening Blue Photo">
         {t.openTitle}
       </h1>
+      {/* A supporter slogan, chosen by the script; empty and hidden until then. */}
+      <p className="open-slogan" data-slogan lang="ko" hidden />
       <p
         data-ko="앱으로 이동하고 있습니다. 이동하지 않으면 아래 버튼을 눌러 주세요."
         data-en="If the app does not open, use the buttons below."

@@ -9,6 +9,7 @@ import {
   parseMemoryId,
   planOpen,
 } from "../src/open-link.mjs";
+import { pickSlogan, slogans } from "../src/slogans.mjs";
 import { stores } from "../src/site.mjs";
 
 const ANDROID_CHROME =
@@ -101,5 +102,37 @@ test("the English route is always English and the shared link follows the browse
   assert.equal(pageLanguage({ pathname: "/open/", language: "en-US" }), "en");
   assert.equal(pageLanguage({ pathname: "/open/", language: "" }), "ko");
   assert.equal(pageLanguage({ pathname: "/english/open/", language: "ko" }), "ko", "only the /en/ prefix counts");
+});
+
+test("the supporter slogans are the confirmed short shouts, nothing else", () => {
+  assert.deepEqual(slogans, ["우리에겐 승리뿐이다", "나의 수원", "수원 언제나 우린 너와 함께해", "수원 블루윙"]);
+  for (const slogan of slogans) {
+    assert.ok(slogan.length >= 3 && slogan.length <= 20, slogan);
+    assert.match(slogan, /^[가-힣 ]+$/, "plain Korean words only: no markup, digits or punctuation");
+  }
+  for (const excluded of ["이겨라 블루윙", "수원 삼성", "수원 골", "2, 3, 4 수원", "트리콜로", "프렌테", "KEEP THE FAITH"]) {
+    assert.ok(!slogans.includes(excluded) && !slogans.some((slogan) => slogan.includes("프렌테")), excluded);
+  }
+});
+
+test("a slogan is chosen at random and always one of the list", () => {
+  assert.equal(pickSlogan(0), slogans[0]);
+  assert.equal(pickSlogan(0.999999), slogans.at(-1));
+  assert.equal(pickSlogan(-5), slogans[0]);
+  assert.equal(pickSlogan(7), slogans.at(-1));
+  const seen = new Set(slogans.map((_, index) => pickSlogan((index + 0.5) / slogans.length)));
+  assert.equal(seen.size, slogans.length, "every slogan can be reached");
+  for (let index = 0; index < 200; index += 1) assert.ok(slogans.includes(pickSlogan()));
+});
+
+test("the page has a slogan slot on both language pages and the script fills it", async () => {
+  for (const path of ["open", "en/open"]) {
+    const html = await readFile(new URL(`../dist/${path}/index.html`, import.meta.url), "utf8");
+    assert.match(html, /<p class="open-slogan" data-slogan="true" lang="ko" hidden=""><\/p>/, path);
+  }
+  const script = await readFile(new URL("../dist/assets/open.js", import.meta.url), "utf8");
+  // The bundler writes non-ASCII characters as \uXXXX escapes, which the browser reads back as the same text.
+  const escaped = (text) => [...text].map((c) => (c.charCodeAt(0) > 127 ? `\\u${c.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")}` : c)).join("");
+  assert.ok(slogans.every((slogan) => script.includes(escaped(slogan))));
 });
 
