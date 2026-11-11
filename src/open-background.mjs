@@ -18,15 +18,8 @@ export function glowFor(rowY, pointerY, radius) {
   return closeness * closeness * (3 - 2 * closeness);
 }
 
-/** A different slogan from the current one, so a tap always visibly changes it. */
-export function pickDifferent(slogans, current, random = Math.random()) {
-  const others = slogans.filter((slogan) => slogan !== current);
-  const pool = others.length > 0 ? others : slogans;
-  return pool[Math.min(pool.length - 1, Math.max(0, Math.floor(random * pool.length)))];
-}
-
 /** Builds the rows and wires the pointer and the icon tap. Returns a function that removes it all. */
-export function mountBackground({ document, window, slogans, icon, onChant, rowCount = 9, repeat = 6 }) {
+export function mountBackground({ document, window, slogans, icon, rowCount = 9, repeat = 6 }) {
   const layer = document.createElement("div");
   layer.className = "open-bg";
   layer.setAttribute("aria-hidden", "true");
@@ -69,7 +62,6 @@ export function mountBackground({ document, window, slogans, icon, onChant, rowC
     // Restart the pulse even on a quick second tap.
     void layer.offsetWidth;
     layer.classList.add("is-chant");
-    onChant?.();
   };
   window.addEventListener("pointermove", move, { passive: true });
   window.addEventListener("pointerleave", leave);

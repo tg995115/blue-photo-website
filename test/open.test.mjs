@@ -9,8 +9,8 @@ import {
   parseMemoryId,
   planOpen,
 } from "../src/open-link.mjs";
-import { buildRows, glowFor, pickDifferent } from "../src/open-background.mjs";
-import { pickSlogan, slogans } from "../src/slogans.mjs";
+import { buildRows, glowFor } from "../src/open-background.mjs";
+import { slogans } from "../src/slogans.mjs";
 import { stores } from "../src/site.mjs";
 
 const ANDROID_CHROME =
@@ -116,20 +116,11 @@ test("the supporter slogans are the confirmed short shouts, nothing else", () =>
   }
 });
 
-test("a slogan is chosen at random and always one of the list", () => {
-  assert.equal(pickSlogan(0), slogans[0]);
-  assert.equal(pickSlogan(0.999999), slogans.at(-1));
-  assert.equal(pickSlogan(-5), slogans[0]);
-  assert.equal(pickSlogan(7), slogans.at(-1));
-  const seen = new Set(slogans.map((_, index) => pickSlogan((index + 0.5) / slogans.length)));
-  assert.equal(seen.size, slogans.length, "every slogan can be reached");
-  for (let index = 0; index < 200; index += 1) assert.ok(slogans.includes(pickSlogan()));
-});
-
-test("the page has a slogan slot on both language pages and the script fills it", async () => {
+test("the slogans live only in the background: the body carries no slogan line and the script has the list", async () => {
   for (const path of ["open", "en/open"]) {
     const html = await readFile(new URL(`../dist/${path}/index.html`, import.meta.url), "utf8");
-    assert.match(html, /<p class="open-slogan" data-slogan="true" lang="ko" hidden=""><\/p>/, path);
+    assert.ok(!/data-slogan|open-slogan/.test(html), path);
+    assert.ok(slogans.every((slogan) => !html.includes(slogan)), "no slogan text in the page body");
   }
   const script = await readFile(new URL("../dist/assets/open.js", import.meta.url), "utf8");
   // The bundler writes non-ASCII characters as \uXXXX escapes, which the browser reads back as the same text.
@@ -162,13 +153,6 @@ test("pointer glow is smooth, bounded and zero when there is no pointer or it is
     last = value;
   }
   assert.equal(glowFor(100, 100, 0), 0, "a zero radius never glows");
-});
-
-test("a tap on the icon always changes the foreground slogan", () => {
-  for (const current of slogans) {
-    for (const random of [0, 0.3, 0.7, 0.999]) assert.notEqual(pickDifferent(slogans, current, random), current);
-  }
-  assert.equal(pickDifferent(["only"], "only", 0.5), "only", "a single slogan cannot change");
 });
 
 test("the stylesheet keeps the background decorative, drifting, and still for reduced motion", async () => {

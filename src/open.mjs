@@ -6,8 +6,8 @@ import {
   parseMemoryId,
   planOpen,
 } from "./open-link.mjs";
-import { mountBackground, pickDifferent } from "./open-background.mjs";
-import { pickSlogan, slogans } from "./slogans.mjs";
+import { mountBackground } from "./open-background.mjs";
+import { slogans } from "./slogans.mjs";
 import { stores } from "./site.mjs";
 
 const language = pageLanguage({ pathname: window.location.pathname, language: navigator.language });
@@ -16,12 +16,7 @@ for (const node of document.querySelectorAll("[data-ko]")) {
   node.textContent = language === "ko" ? node.dataset.ko : node.dataset.en;
 }
 
-const slogan = document.querySelector("[data-slogan]");
-if (slogan) {
-  slogan.textContent = pickSlogan();
-  slogan.hidden = false;
-}
-// The slogans also drift behind the icon; the icon answers a tap with a pulse and a new shout.
+// The slogans drift behind the icon, and the icon answers a tap with a pulse.
 // It is decoration only: a failure here must never stop the visitor from reaching the app.
 try {
   mountBackground({
@@ -29,9 +24,6 @@ try {
     window,
     slogans,
     icon: document.querySelector(".download-icon"),
-    onChant: () => {
-      if (slogan) slogan.textContent = pickDifferent(slogans, slogan.textContent);
-    },
   });
 } catch {
   // The page still opens the app and keeps both buttons.

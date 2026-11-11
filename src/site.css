@@ -505,16 +505,6 @@ small {
   text-wrap: balance;
   max-width: 360px;
 }
-[data-open-page] > p.open-slogan {
-  margin: 4px 0 16px;
-  color: var(--blue);
-  font-size: 18px;
-  font-weight: 650;
-  letter-spacing: -0.02em;
-}
-[data-open-page] > p.open-slogan[hidden] {
-  display: none;
-}
 [data-open-page] > .button {
   width: 100%;
   max-width: 320px;

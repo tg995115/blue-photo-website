@@ -1,4 +1,4 @@
-// Short shouted supporter slogans shown, one at random, on the open-in-app page.
+// Short shouted supporter slogans repeated in the background of the open-in-app page.
 //
 // Only a few words each, written here directly: no song lyrics, no wording copied from a wiki, and no
 // supporter-group names or mottos (which would read as the group's endorsement). Korean only, on both
@@ -10,9 +10,3 @@ export const slogans = [
   "수원 블루윙",
   "힘을 내라, 수원",
 ];
-
-/** One slogan for a random number in [0, 1); injectable so tests do not depend on chance. */
-export function pickSlogan(random = Math.random()) {
-  const index = Math.min(slogans.length - 1, Math.max(0, Math.floor(random * slogans.length)));
-  return slogans[index];
-}
