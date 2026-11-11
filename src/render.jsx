@@ -253,12 +253,12 @@ function OpenInApp({ lang }) {
         width="88"
         height="88"
       />
-      <h1 data-ko="Blue Photo에서 열기" data-en="Open in Blue Photo">
+      <h1 data-ko="Blue Photo 앱으로 이동" data-en="Go to the Blue Photo app">
         {t.openTitle}
       </h1>
       <p
-        data-ko="앱이 설치되어 있으면 바로 열립니다. 열리지 않으면 아래 버튼을 눌러 주세요."
-        data-en="The app opens right away if it is installed. If not, use the buttons below."
+        data-ko="앱으로 이동하고 있습니다. 이동하지 않으면 아래 버튼을 눌러 주세요."
+        data-en="Taking you to the app. If nothing happens, use the buttons below."
       >
         {t.openBody}
       </p>
@@ -453,10 +453,14 @@ function Document({
         {kind === "open" && <script type="module" src={asset("open.js")} />}
       </head>
       <body>
-        <a className="skip-link" href="#main">
-          {t.skip}
-        </a>
-        <Header lang={lang} route={route} />
+        {kind !== "open" && (
+          <>
+            <a className="skip-link" href="#main">
+              {t.skip}
+            </a>
+            <Header lang={lang} route={route} />
+          </>
+        )}
         {legal ? (
           <LegalDocument document={legal} lang={lang} pathFor={pathFor} />
         ) : kind === "landing" ? (
@@ -470,7 +474,7 @@ function Document({
         ) : (
           <NotFound lang={lang} />
         )}
-        <Footer lang={lang} />
+        {kind !== "open" && <Footer lang={lang} />}
       </body>
     </html>
   );

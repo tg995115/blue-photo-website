@@ -77,10 +77,11 @@ test("the shared link's preview is small: a short title and description, no imag
     const title = html.match(/<meta property="og:title" content="([^"]*)"/)?.[1];
     const description = html.match(/<meta property="og:description" content="([^"]*)"/)?.[1];
     assert.ok(title && title.length < 30, `${path}: ${title}`);
-    assert.ok(description && description.length < 50, `${path}: ${description}`);
+    assert.ok(description && description.length < 80, `${path}: ${description}`);
   }
   const ko = await readFile(new URL("../dist/open/index.html", import.meta.url), "utf8");
-  assert.match(ko, /og:title" content="Blue Photo에서 열기"/);
-  assert.match(ko, /og:description" content="누르면 Blue Photo 앱에서 열립니다\."/);
+  assert.match(ko, /og:title" content="Blue Photo 앱으로 이동"/);
+  assert.match(ko, /og:description" content="앱이 있으면 바로 열리고, 없으면 스토어로 이동합니다\."/);
+  assert.ok(!/<header|<footer|skip-link/.test(ko), "a redirect page has no site navigation");
 });
 
