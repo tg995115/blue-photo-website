@@ -79,6 +79,15 @@ await build({
   outfile: `${outDir}/assets/download.js`,
 });
 await build({
+  entryPoints: ["src/open.mjs"],
+  bundle: true,
+  platform: "browser",
+  format: "esm",
+  minify: true,
+  target: "es2022",
+  outfile: `${outDir}/assets/open.js`,
+});
+await build({
   entryPoints: ["src/promo.mjs"],
   bundle: true,
   platform: "browser",

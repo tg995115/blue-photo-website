@@ -83,6 +83,9 @@ export const copy = {
     terms: "이용약관",
     credit: "사진 · 홍준기",
     skip: "본문으로 건너뛰기",
+    openTitle: "Blue Photo에서 열기",
+    openBody: "앱이 설치되어 있으면 바로 열립니다. 열리지 않으면 아래 버튼을 눌러 주세요.",
+    openButton: "앱에서 열기",
     downloadTitle: "Blue Photo 다운로드",
     downloadBody: "사용하는 기기에 맞는 스토어를 선택하세요.",
     redirect:
@@ -147,6 +150,9 @@ export const copy = {
     terms: "Terms of use",
     credit: "Photography · JK HONG",
     skip: "Skip to content",
+    openTitle: "Open in Blue Photo",
+    openBody: "The app opens right away if it is installed. If not, use the buttons below.",
+    openButton: "Open in the app",
     downloadTitle: "Download Blue Photo",
     downloadBody: "Choose the store for your device.",
     redirect:

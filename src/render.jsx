@@ -241,6 +241,49 @@ function Download({ lang, platform }) {
   );
 }
 
+function OpenInApp({ lang }) {
+  const t = copy[lang];
+  // Both languages are in the markup; the script picks one from the visitor's browser language.
+  return (
+    <main id="main" className="download-page container" data-open-page>
+      <img
+        className="download-icon"
+        src={asset("app-icon.jpg")}
+        alt=""
+        width="88"
+        height="88"
+      />
+      <h1 data-ko="Blue Photo에서 열기" data-en="Open in Blue Photo">
+        {t.openTitle}
+      </h1>
+      <p
+        data-ko="앱이 설치되어 있으면 바로 열립니다. 열리지 않으면 아래 버튼을 눌러 주세요."
+        data-en="The app opens right away if it is installed. If not, use the buttons below."
+      >
+        {t.openBody}
+      </p>
+      <a
+        className="button primary"
+        data-open-app
+        href={pathFor("/download/")}
+        data-ko="앱에서 열기"
+        data-en="Open in the app"
+      >
+        {t.openButton}
+      </a>
+      <a
+        className="button"
+        data-store
+        href={pathFor("/download/")}
+        data-ko="앱 받기"
+        data-en="Get the app"
+      >
+        {t.getTitle}
+      </a>
+    </main>
+  );
+}
+
 function Promotion({ lang, promotion }) {
   const t = copy[lang];
   if (!promotion)
@@ -337,6 +380,9 @@ function Document({
   } else if (kind === "download") {
     title = `${t.downloadTitle}${platform ? ` — ${stores[platform].platform}` : ""}`;
     description = t.getBody;
+  } else if (kind === "open") {
+    title = `${t.openTitle} — Blue Photo`;
+    description = t.openBody;
   } else if (kind === "promo") {
     title = `${promotion ? t.promoFreeTitle : t.promoMissingTitle} — Blue Photo`;
     description = promotion ? t.promoBody : t.promoMissingBody;
@@ -353,7 +399,7 @@ function Document({
         <meta name="description" content={description} />
         <meta name="theme-color" content="#124cdb" />
         <link rel="canonical" href={url} />
-        {(kind === "404" || (kind === "promo" && !promotion)) && (
+        {(kind === "404" || kind === "open" || (kind === "promo" && !promotion)) && (
           <meta name="robots" content="noindex" />
         )}
         <meta property="og:type" content="website" />
@@ -397,6 +443,7 @@ function Document({
         {kind === "promo" && promotion && (
           <script type="module" src={asset("promo.js")} />
         )}
+        {kind === "open" && <script type="module" src={asset("open.js")} />}
       </head>
       <body>
         <a className="skip-link" href="#main">
@@ -411,6 +458,8 @@ function Document({
           <Download lang={lang} platform={platform} />
         ) : kind === "promo" ? (
           <Promotion lang={lang} promotion={promotion} />
+        ) : kind === "open" ? (
+          <OpenInApp lang={lang} />
         ) : (
           <NotFound lang={lang} />
         )}
@@ -427,6 +476,8 @@ for (const lang of ["ko", "en"]) {
   routes.push({ route: `${base}/`, lang });
   routes.push({ route: `${base}/index/`, lang, canonical: `${base}/` });
   routes.push({ route: `${base}/download/`, lang, kind: "download" });
+  // The shared link carries no language; the script chooses the text from the visitor's browser.
+  routes.push({ route: `${base}/open/`, lang, kind: "open" });
   routes.push({ route: `${base}/promo/`, lang, kind: "promo" });
   for (const promotion of promotions)
     routes.push({

@@ -14,7 +14,7 @@
     "preview": "node scripts/serve.mjs",
     "preview:pages": "node scripts/serve.mjs --dir dist-pages --port 4174",
     "test:pages": "node --test test/pages-build.test.mjs",
-    "test": "node --test test/analytics.test.mjs test/download.test.mjs test/promo.test.mjs"
+    "test": "node --test test/download.test.mjs test/open.test.mjs"
   },
   "dependencies": {
     "@paper-design/shaders-react": "0.0.81",

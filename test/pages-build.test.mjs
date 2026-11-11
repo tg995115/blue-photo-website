@@ -50,7 +50,7 @@ test("every Pages page has working root links, assets and custom-domain metadata
   const pages = (await readdir(root, { recursive: true })).filter((name) =>
     name.endsWith(".html"),
   );
-  assert.equal(pages.length, 19 + promotions.length * 2);
+  assert.equal(pages.length, 21 + promotions.length * 2);
   for (const name of pages) {
     const html = await readFile(join(root, name), "utf8");
     assert.ok(
