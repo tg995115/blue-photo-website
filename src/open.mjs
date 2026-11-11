@@ -2,15 +2,16 @@ import {
   androidIntent,
   appLink,
   kakaoOpenExternal,
+  pageLanguage,
   parseMemoryId,
   planOpen,
 } from "./open-link.mjs";
 import { stores } from "./site.mjs";
 
-const korean = !(navigator.language || "").toLowerCase().startsWith("en");
-document.documentElement.lang = korean ? "ko" : "en";
+const language = pageLanguage({ pathname: window.location.pathname, language: navigator.language });
+document.documentElement.lang = language;
 for (const node of document.querySelectorAll("[data-ko]")) {
-  node.textContent = korean ? node.dataset.ko : node.dataset.en;
+  node.textContent = language === "ko" ? node.dataset.ko : node.dataset.en;
 }
 
 const id = parseMemoryId(window.location.search);

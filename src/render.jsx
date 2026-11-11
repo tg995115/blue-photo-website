@@ -253,12 +253,12 @@ function OpenInApp({ lang }) {
         width="88"
         height="88"
       />
-      <h1 data-ko="Blue Photo 앱으로 이동" data-en="Go to the Blue Photo app">
+      <h1 data-ko="Blue Photo 앱으로 이동" data-en="Opening Blue Photo">
         {t.openTitle}
       </h1>
       <p
         data-ko="앱으로 이동하고 있습니다. 이동하지 않으면 아래 버튼을 눌러 주세요."
-        data-en="Taking you to the app. If nothing happens, use the buttons below."
+        data-en="If the app does not open, use the buttons below."
       >
         {t.openBody}
       </p>
@@ -267,7 +267,7 @@ function OpenInApp({ lang }) {
         data-open-app
         href={pathFor("/download/")}
         data-ko="앱에서 열기"
-        data-en="Open in the app"
+        data-en="Open in app"
       >
         {t.openButton}
       </a>
@@ -276,7 +276,7 @@ function OpenInApp({ lang }) {
         data-store
         href={pathFor("/download/")}
         data-ko="앱 받기 · 업데이트"
-        data-en="Get or update the app"
+        data-en="Get or update app"
       >
         {t.openGet}
       </a>
@@ -284,7 +284,7 @@ function OpenInApp({ lang }) {
       <p
         className="download-help"
         data-ko="앱은 열렸는데 이 카드가 보이지 않나요? 앱을 최신 버전으로 업데이트한 뒤 이 링크를 다시 열어 주세요."
-        data-en="The app opened but you don't see this card? Update the app to the latest version, then open this link again."
+        data-en="App opened, but no card? Update Blue Photo to the latest version, then open this link again."
       >
         {t.openUpdate}
       </p>

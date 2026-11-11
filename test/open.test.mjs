@@ -5,6 +5,7 @@ import {
   androidIntent,
   appLink,
   kakaoOpenExternal,
+  pageLanguage,
   parseMemoryId,
   planOpen,
 } from "../src/open-link.mjs";
@@ -64,7 +65,7 @@ test("the built page is static, bilingual, not indexed and keeps both buttons", 
   assert.match(html, /data-open-app/);
   assert.match(html, /data-store/);
   assert.match(html, /src="\/assets\/open\.js"/);
-  assert.match(html, /data-ko="앱에서 열기" data-en="Open in the app"/);
+  assert.match(html, /data-ko="앱에서 열기" data-en="Open in app"/);
   const script = await readFile(new URL("../dist/assets/open.js", import.meta.url), "utf8");
   assert.ok(script.length > 200);
   assert.ok(!/gtag|dataLayer/.test(script), "the open script itself sends no events");
@@ -86,10 +87,19 @@ test("the shared link's preview is small: a short title and description, no imag
 });
 
 test("the page tells a visitor whose older app opened without the card to update", async () => {
-  for (const [path, phrase] of [["open", "최신 버전으로 업데이트"], ["en/open", "Update the app to the latest version"]]) {
+  for (const [path, phrase] of [["open", "최신 버전으로 업데이트"], ["en/open", "Update Blue Photo to the latest version"]]) {
     const html = await readFile(new URL(`../dist/${path}/index.html`, import.meta.url), "utf8");
     assert.ok(html.includes(phrase), path);
     assert.match(html, /data-store/, "the store button stays, labelled for both getting and updating");
   }
+});
+
+test("the English route is always English and the shared link follows the browser language", () => {
+  assert.equal(pageLanguage({ pathname: "/en/open/", language: "ko-KR" }), "en");
+  assert.equal(pageLanguage({ pathname: "/en/open", language: "" }), "en");
+  assert.equal(pageLanguage({ pathname: "/open/", language: "ko-KR" }), "ko");
+  assert.equal(pageLanguage({ pathname: "/open/", language: "en-US" }), "en");
+  assert.equal(pageLanguage({ pathname: "/open/", language: "" }), "ko");
+  assert.equal(pageLanguage({ pathname: "/english/open/", language: "ko" }), "ko", "only the /en/ prefix counts");
 });
 

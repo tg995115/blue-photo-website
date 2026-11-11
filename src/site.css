@@ -401,6 +401,43 @@ small {
 .download-page > .button {
   margin-top: 25px;
 }
+/* The redirect page: one centered column, equal-width buttons, balanced line breaks. */
+[data-open-page] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding-block: 48px;
+}
+[data-open-page] h1 {
+  font-size: clamp(28px, 8vw, 38px);
+  text-wrap: balance;
+}
+[data-open-page] > p:not(.eyebrow) {
+  text-wrap: balance;
+  max-width: 360px;
+}
+[data-open-page] > .button {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 12px;
+}
+[data-open-page] > .primary {
+  margin-top: 28px;
+}
+[data-open-page] > .button:not(.primary) {
+  border: 1.5px solid var(--blue);
+  color: var(--blue);
+}
+[data-open-page] > .button:not(.primary):hover {
+  background: #eef3ff;
+}
+[data-open-page] > .download-help {
+  max-width: 320px;
+  margin-top: 28px;
+  text-wrap: balance;
+}
 .promo-page {
   min-height: calc(100svh - 245px);
   max-width: 1000px;

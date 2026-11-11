@@ -46,3 +46,10 @@ export function planOpen({ id, userAgent = "", platform = "", maxTouchPoints = 0
   }
   return { action: "none" };
 }
+
+/** The English route is always English; the Korean route (the shared link) follows the browser. */
+export function pageLanguage({ pathname = "", language = "" }) {
+  if (/^\/en(\/|$)/.test(pathname)) return "en";
+  return language.toLowerCase().startsWith("en") ? "en" : "ko";
+}
+
