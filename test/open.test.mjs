@@ -9,6 +9,7 @@ import {
   parseMemoryId,
   planOpen,
 } from "../src/open-link.mjs";
+import { buildRows, glowFor, pickDifferent } from "../src/open-background.mjs";
 import { pickSlogan, slogans } from "../src/slogans.mjs";
 import { stores } from "../src/site.mjs";
 
@@ -134,5 +135,56 @@ test("the page has a slogan slot on both language pages and the script fills it"
   // The bundler writes non-ASCII characters as \uXXXX escapes, which the browser reads back as the same text.
   const escaped = (text) => [...text].map((c) => (c.charCodeAt(0) > 127 ? `\\u${c.charCodeAt(0).toString(16).toUpperCase().padStart(4, "0")}` : c)).join("");
   assert.ok(slogans.every((slogan) => script.includes(escaped(slogan))));
+});
+
+test("background rows repeat the slogans, rotate between rows and always cover the width", () => {
+  const rows = buildRows(slogans, 9, 6);
+  assert.equal(rows.length, 9);
+  for (const row of rows) {
+    assert.equal(row.length, 6);
+    assert.ok(row.every((word) => slogans.includes(word)));
+  }
+  assert.notEqual(rows[0][0], rows[1][0], "neighbouring rows start with different shouts");
+  assert.deepEqual(rows[0], rows[slogans.length], "rotation repeats after one full cycle");
+  const widest = Math.max(...rows.map((row) => row.join("").length));
+  assert.ok(widest >= 30, "a half row is long enough to span a phone screen at the largest size");
+});
+
+test("pointer glow is smooth, bounded and zero when there is no pointer or it is far away", () => {
+  assert.equal(glowFor(100, null, 200), 0);
+  assert.equal(glowFor(100, 100, 200), 1);
+  assert.equal(glowFor(100, 400, 200), 0);
+  assert.equal(glowFor(100, 300, 200), 0, "exactly at the radius is dark");
+  let last = 1;
+  for (let distance = 0; distance <= 200; distance += 10) {
+    const value = glowFor(100, 100 + distance, 200);
+    assert.ok(value >= 0 && value <= 1 && value <= last, `monotonic at ${distance}`);
+    last = value;
+  }
+  assert.equal(glowFor(100, 100, 0), 0, "a zero radius never glows");
+});
+
+test("a tap on the icon always changes the foreground slogan", () => {
+  for (const current of slogans) {
+    for (const random of [0, 0.3, 0.7, 0.999]) assert.notEqual(pickDifferent(slogans, current, random), current);
+  }
+  assert.equal(pickDifferent(["only"], "only", 0.5), "only", "a single slogan cannot change");
+});
+
+test("the stylesheet keeps the background decorative, drifting, and still for reduced motion", async () => {
+  const css = await readFile(new URL("../dist/assets/site.css", import.meta.url), "utf8");
+  assert.match(css, /\.open-bg\s*\{[^}]*pointer-events:\s*none/);
+  assert.match(css, /@keyframes open-drift/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)\s*\{[^@]*\.open-bg-row\s*\{[^}]*animation:\s*none/);
+  assert.match(css, /\[data-open-page\] > \.button:not\(\.primary\)\s*\{[^}]*background:\s*#fff/, "buttons stay legible over the rows");
+});
+
+test("a failure in the decorative background cannot stop the app from opening", async () => {
+  const source = await readFile(new URL("../src/open.mjs", import.meta.url), "utf8");
+  const mount = source.indexOf("mountBackground({");
+  const plan = source.indexOf("const plan = planOpen(");
+  assert.ok(mount > 0 && plan > mount, "the background is set up before the redirect is planned");
+  const between = source.slice(source.lastIndexOf("try {", mount), plan);
+  assert.match(between, /try \{[\s\S]*mountBackground\(\{[\s\S]*\} catch \{/, "wrapped so any error is swallowed");
 });
 
