@@ -402,7 +402,86 @@ small {
   margin-top: 25px;
 }
 /* The redirect page: one centered column, equal-width buttons, balanced line breaks. */
+/* Slogans repeated in drifting rows behind the icon: decorative, dim, brighter near the pointer. */
+.open-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+.open-bg-row {
+  --glow: 0;
+  white-space: nowrap;
+  font-size: clamp(30px, 9vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--blue);
+  opacity: calc(0.07 + var(--glow) * 0.14);
+  transition: opacity 0.25s ease-out;
+  animation: open-drift var(--duration, 40s) linear infinite;
+  animation-direction: var(--direction, normal);
+  will-change: transform;
+}
+.open-bg-row span {
+  padding-right: 1.4em;
+}
+@keyframes open-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes open-chant {
+  0% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  35% {
+    filter: brightness(1.6);
+    transform: scale(1.04);
+  }
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+.open-bg.is-chant .open-bg-row {
+  opacity: 0.22;
+}
+.open-bg.is-chant {
+  animation: open-chant 0.7s ease-out;
+}
+[data-open-page] .download-icon {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease-out;
+}
+[data-open-page] .download-icon:active {
+  transform: scale(0.94);
+}
+@media (prefers-reduced-motion: reduce) {
+  .open-bg-row {
+    animation: none;
+    transition: none;
+  }
+  .open-bg.is-chant {
+    animation: none;
+  }
+  [data-open-page] .download-icon {
+    transition: none;
+  }
+}
 [data-open-page] {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -413,6 +492,14 @@ small {
 [data-open-page] h1 {
   font-size: clamp(28px, 8vw, 38px);
   text-wrap: balance;
+}
+/* A soft white halo keeps the text readable when a bright slogan row passes behind it. */
+[data-open-page] h1,
+[data-open-page] > p {
+  text-shadow:
+    0 0 6px #fff,
+    0 0 14px #fff,
+    0 0 22px #fff;
 }
 [data-open-page] > p:not(.eyebrow) {
   text-wrap: balance;
@@ -438,6 +525,7 @@ small {
 }
 [data-open-page] > .button:not(.primary) {
   border: 1.5px solid var(--blue);
+  background: #fff;
   color: var(--blue);
 }
 [data-open-page] > .button:not(.primary):hover {
