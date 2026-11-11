@@ -63,12 +63,11 @@ test("every Pages page has working root links, assets and custom-domain metadata
       html.includes(`<meta property="og:url" content="${publicUrl}`),
       name,
     );
-    assert.ok(
-      html.includes(
-        `<meta property="og:image" content="${publicUrl}assets/app-icon.png"`,
-      ),
-      name,
-    );
+    const imageTag = `<meta property="og:image" content="${publicUrl}assets/app-icon.png"`;
+    if (name.replaceAll("\\", "/").endsWith("open/index.html")) {
+      // A shared link's preview stays small: no image, because the photos travel in the message.
+      assert.ok(!/og:image|twitter:image/.test(html), name);
+    } else assert.ok(html.includes(imageTag), name);
     for (const [, value] of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
       if (value.startsWith("#") || /^https?:\/\//.test(value)) continue;
       assert.ok(value.startsWith(base), `${name}: ${value}`);

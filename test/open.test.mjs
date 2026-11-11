@@ -69,3 +69,18 @@ test("the built page is static, bilingual, not indexed and keeps both buttons", 
   assert.ok(script.length > 200);
   assert.ok(!/gtag|dataLayer/.test(script), "the open script itself sends no events");
 });
+
+test("the shared link's preview is small: a short title and description, no image", async () => {
+  for (const path of ["open", "en/open"]) {
+    const html = await readFile(new URL(`../dist/${path}/index.html`, import.meta.url), "utf8");
+    assert.ok(!/og:image|twitter:image/.test(html), path);
+    const title = html.match(/<meta property="og:title" content="([^"]*)"/)?.[1];
+    const description = html.match(/<meta property="og:description" content="([^"]*)"/)?.[1];
+    assert.ok(title && title.length < 30, `${path}: ${title}`);
+    assert.ok(description && description.length < 50, `${path}: ${description}`);
+  }
+  const ko = await readFile(new URL("../dist/open/index.html", import.meta.url), "utf8");
+  assert.match(ko, /og:title" content="Blue Photo에서 열기"/);
+  assert.match(ko, /og:description" content="누르면 Blue Photo 앱에서 열립니다\."/);
+});
+

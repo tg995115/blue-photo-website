@@ -381,8 +381,9 @@ function Document({
     title = `${t.downloadTitle}${platform ? ` — ${stores[platform].platform}` : ""}`;
     description = t.getBody;
   } else if (kind === "open") {
-    title = `${t.openTitle} — Blue Photo`;
-    description = t.openBody;
+    // A shared link's preview stays small: the photos travel in the message itself.
+    title = t.openTitle;
+    description = t.openPreview;
   } else if (kind === "promo") {
     title = `${promotion ? t.promoFreeTitle : t.promoMissingTitle} — Blue Photo`;
     description = promotion ? t.promoBody : t.promoMissingBody;
@@ -411,14 +412,20 @@ function Document({
           property="og:locale"
           content={lang === "ko" ? "ko_KR" : "en_US"}
         />
-        <meta property="og:image" content={absoluteUrl(site.socialImage)} />
-        <meta property="og:image:width" content="1024" />
-        <meta property="og:image:height" content="1024" />
-        <meta property="og:image:alt" content="Blue Photo" />
+        {kind !== "open" && (
+          <>
+            <meta property="og:image" content={absoluteUrl(site.socialImage)} />
+            <meta property="og:image:width" content="1024" />
+            <meta property="og:image:height" content="1024" />
+            <meta property="og:image:alt" content="Blue Photo" />
+          </>
+        )}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={absoluteUrl(site.socialImage)} />
+        {kind !== "open" && (
+          <meta name="twitter:image" content={absoluteUrl(site.socialImage)} />
+        )}
         <link rel="icon" type="image/jpeg" href={asset("app-icon.jpg")} />
         <link rel="apple-touch-icon" href={asset("app-icon.jpg")} />
         <link rel="stylesheet" href={asset("site.css")} />
