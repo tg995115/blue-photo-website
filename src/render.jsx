@@ -275,11 +275,19 @@ function OpenInApp({ lang }) {
         className="button"
         data-store
         href={pathFor("/download/")}
-        data-ko="앱 받기"
-        data-en="Get the app"
+        data-ko="앱 받기 · 업데이트"
+        data-en="Get or update the app"
       >
-        {t.getTitle}
+        {t.openGet}
       </a>
+      {/* An older app opens but ignores a link type it does not know; this tells the visitor what to do. */}
+      <p
+        className="download-help"
+        data-ko="앱은 열렸는데 이 카드가 보이지 않나요? 앱을 최신 버전으로 업데이트한 뒤 이 링크를 다시 열어 주세요."
+        data-en="The app opened but you don't see this card? Update the app to the latest version, then open this link again."
+      >
+        {t.openUpdate}
+      </p>
     </main>
   );
 }

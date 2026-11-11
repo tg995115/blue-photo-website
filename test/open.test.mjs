@@ -85,3 +85,11 @@ test("the shared link's preview is small: a short title and description, no imag
   assert.ok(!/<header|<footer|skip-link/.test(ko), "a redirect page has no site navigation");
 });
 
+test("the page tells a visitor whose older app opened without the card to update", async () => {
+  for (const [path, phrase] of [["open", "최신 버전으로 업데이트"], ["en/open", "Update the app to the latest version"]]) {
+    const html = await readFile(new URL(`../dist/${path}/index.html`, import.meta.url), "utf8");
+    assert.ok(html.includes(phrase), path);
+    assert.match(html, /data-store/, "the store button stays, labelled for both getting and updating");
+  }
+});
+
