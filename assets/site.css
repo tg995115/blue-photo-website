@@ -1035,3 +1035,16 @@ html:lang(ko) .badge-art-android {
     flex-direction: column;
   }
 }
+
+/* The promo fallback uses the same open-page layout and existing button style. */
+.promotion-controls {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 28px;
+  text-align: left;
+}
+.promotion-controls label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 14px; }
+.promotion-controls input { width: 100%; min-height: 54px; border: 1px solid #cbd2db; border-radius: 7px; padding: 12px; font: inherit; background: #fff; }
+.promotion-controls input:focus-visible { outline: 3px solid #1470ff; outline-offset: 3px; }
+.promotion-controls .button { width: 100%; margin-top: 12px; border: 0; font-family: inherit; cursor: pointer; }
+.promotion-controls .download-help { margin-top: 24px; text-align: center; text-wrap: balance; text-shadow: 0 0 6px #fff, 0 0 14px #fff, 0 0 22px #fff; }
