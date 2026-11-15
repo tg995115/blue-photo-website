@@ -3,7 +3,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { copy, site, stores } from "./site.mjs";
-import { promotions, validatePromotions } from "./promotions.mjs";
 import { LegalDocument, readLegal } from "./legal.jsx";
 import { createBuildConfig } from "./build-config.mjs";
 
@@ -216,6 +215,7 @@ function Download({ lang, platform }) {
       id="main"
       className="download-page container"
       data-download-platform={platform || "auto"}
+      data-download-path={pathFor(`${prefix(lang)}/download/`)}
     >
       <img
         className="download-icon"
@@ -241,11 +241,22 @@ function Download({ lang, platform }) {
   );
 }
 
-function OpenInApp({ lang }) {
+function OpenInApp({ lang, promotion = false }) {
   const t = copy[lang];
   // Both languages are in the markup; the script picks one from the visitor's browser language.
   return (
-    <main id="main" className="download-page container" data-open-page>
+    <main id="main" className="download-page container" data-open-page
+      data-promotion={promotion || undefined}
+      data-download-path={promotion ? pathFor(`${prefix(lang)}/download/`) : undefined}
+      data-opening={promotion ? t.promoOpeningBody : undefined}
+      data-opening-ko={promotion ? copy.ko.promoOpeningBody : undefined}
+      data-opening-en={promotion ? copy.en.promoOpeningBody : undefined}
+      data-invalid-code={promotion ? t.promoInvalidCode : undefined}
+      data-invalid-code-ko={promotion ? copy.ko.promoInvalidCode : undefined}
+      data-invalid-code-en={promotion ? copy.en.promoInvalidCode : undefined}
+      data-phone-required={promotion ? t.promoPhoneRequired : undefined}
+      data-phone-required-ko={promotion ? copy.ko.promoPhoneRequired : undefined}
+      data-phone-required-en={promotion ? copy.en.promoPhoneRequired : undefined}>
       <img
         className="download-icon"
         src={asset("app-icon.jpg")}
@@ -253,15 +264,30 @@ function OpenInApp({ lang }) {
         width="88"
         height="88"
       />
-      <h1 data-ko="Blue Photo 앱으로 이동" data-en="Opening Blue Photo">
-        {t.openTitle}
+      <h1 data-ko={promotion ? copy.ko.promoOpeningTitle : "Blue Photo 앱으로 이동"}
+        data-en={promotion ? copy.en.promoOpeningTitle : "Opening Blue Photo"}>
+        {promotion ? t.promoOpeningTitle : t.openTitle}
       </h1>
       <p
-        data-ko="앱으로 이동하고 있습니다. 이동하지 않으면 아래 버튼을 눌러 주세요."
-        data-en="If the app does not open, use the buttons below."
+        id={promotion ? "promotion-status" : undefined}
+        data-promotion-status={promotion || undefined}
+        role={promotion ? "status" : undefined}
+        aria-live={promotion ? "polite" : undefined}
+        data-ko={promotion ? copy.ko.promoOpeningBody : "앱으로 이동하고 있습니다. 이동하지 않으면 아래 버튼을 눌러 주세요."}
+        data-en={promotion ? copy.en.promoOpeningBody : "If the app does not open, use the buttons below."}
       >
-        {t.openBody}
+        {promotion ? t.promoOpeningBody : t.openBody}
       </p>
+      {promotion ? (
+        <form className="promotion-controls" data-promotion-form noValidate>
+          <label htmlFor="promotion-code" data-ko={copy.ko.promoCodeLabel} data-en={copy.en.promoCodeLabel}>{t.promoCodeLabel}</label>
+          <input id="promotion-code" data-promotion-code type="text" maxLength={64}
+            autoComplete="off" autoCapitalize="characters" spellCheck="false"
+            aria-describedby="promotion-status" />
+          <button className="button primary" type="submit" data-ko={copy.ko.openButton} data-en={copy.en.openButton}>{t.openButton}</button>
+          <p className="download-help" data-ko={copy.ko.promoManualHelp} data-en={copy.en.promoManualHelp}>{t.promoManualHelp}</p>
+        </form>
+      ) : <>
       <a
         className="button primary"
         data-open-app
@@ -288,72 +314,13 @@ function OpenInApp({ lang }) {
       >
         {t.openUpdate}
       </p>
+      </>}
     </main>
   );
 }
 
-function Promotion({ lang, promotion }) {
-  const t = copy[lang];
-  if (!promotion)
-    return (
-      <main id="main" className="download-page container">
-        <h1>{t.promoMissingTitle}</h1>
-        <p>{t.promoMissingBody}</p>
-        <a className="button primary" href={pathFor(`${prefix(lang)}/`)}>
-          {t.back}
-        </a>
-      </main>
-    );
-
-  return (
-    <main id="main" className="promo-page container">
-      <p className="eyebrow">{t.promoEyebrow}</p>
-      <h1>{t.promoFreeTitle}</h1>
-      <p className="promo-intro">{t.promoBody}</p>
-      <div className="promo-platforms">
-        <section className="promo-platform" aria-labelledby="promo-ios">
-          <h2 id="promo-ios">{t.promoIos}</h2>
-          <p className="promo-duration">{t.promoAppleFree(promotion.appleFreeMonths)}</p>
-          <p>{t.promoIosBody}</p>
-          <a
-            className="button primary"
-            href={promotion.appleUrl}
-            data-store-platform="ios"
-            data-store-source="promo"
-          >
-            {t.promoIosAction}
-          </a>
-        </section>
-        <section className="promo-platform" aria-labelledby="promo-android">
-          <h2 id="promo-android">{t.promoAndroid}</h2>
-          <p className="promo-duration">{t.promoGoogleFree(promotion.googleFreeDays)}</p>
-          <p>{t.promoAndroidBody}</p>
-          <div className="promo-code" data-promo-code={promotion.googleCode}>
-            <code>{promotion.googleCode}</code>
-            <button type="button" data-promo-copy hidden>
-              {t.promoCopy}
-            </button>
-          </div>
-          <p
-            className="promo-copy-status"
-            data-promo-copy-status
-            data-success={t.promoCopied}
-            data-failure={t.promoCopyFailed}
-            aria-live="polite"
-          />
-          <a
-            className="button primary"
-            href={stores.android.url}
-            data-store-platform="android"
-            data-store-source="promo"
-          >
-            {t.promoAndroidAction}
-          </a>
-        </section>
-      </div>
-      <p className="promo-note">{t.promoRenewal}</p>
-    </main>
-  );
+function Promotion({ lang }) {
+  return <OpenInApp lang={lang} promotion />;
 }
 
 function NotFound({ lang }) {
@@ -375,7 +342,6 @@ function Document({
   route,
   kind = "landing",
   platform = null,
-  promotion = null,
   canonical = route,
   legal = null,
 }) {
@@ -393,8 +359,8 @@ function Document({
     title = t.openTitle;
     description = t.openPreview;
   } else if (kind === "promo") {
-    title = `${promotion ? t.promoFreeTitle : t.promoMissingTitle} — Blue Photo`;
-    description = promotion ? t.promoBody : t.promoMissingBody;
+    title = t.promoOpeningTitle;
+    description = t.promoOpeningBody;
   } else if (kind === "404") {
     title = `${t.notFound} — Blue Photo`;
   }
@@ -408,7 +374,8 @@ function Document({
         <meta name="description" content={description} />
         <meta name="theme-color" content="#124cdb" />
         <link rel="canonical" href={url} />
-        {(kind === "404" || kind === "open" || (kind === "promo" && !promotion)) && (
+        {(kind === "promo" || kind === "download") && <meta name="referrer" content="no-referrer" />}
+        {(kind === "404" || kind === "open" || kind === "promo") && (
           <meta name="robots" content="noindex" />
         )}
         <meta property="og:type" content="website" />
@@ -445,7 +412,7 @@ function Document({
             />
             <script
               dangerouslySetInnerHTML={{
-                __html: `window.bluePhotoAnalyticsEnabled=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config','${buildConfig.gaMeasurementId}');`,
+                __html: `window.bluePhotoAnalyticsEnabled=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config','${buildConfig.gaMeasurementId}'${(kind === "promo" || kind === "download") ? `,{page_location:'${url}',page_referrer:''}` : ""});`,
               }}
             />
             <script type="module" src={asset("analytics.js")} />
@@ -455,13 +422,13 @@ function Document({
         {kind === "download" && (
           <script type="module" src={asset("download.js")} />
         )}
-        {kind === "promo" && promotion && (
+        {kind === "promo" && (
           <script type="module" src={asset("promo.js")} />
         )}
         {kind === "open" && <script type="module" src={asset("open.js")} />}
       </head>
       <body>
-        {kind !== "open" && (
+        {kind !== "open" && kind !== "promo" && (
           <>
             <a className="skip-link" href="#main">
               {t.skip}
@@ -476,20 +443,19 @@ function Document({
         ) : kind === "download" ? (
           <Download lang={lang} platform={platform} />
         ) : kind === "promo" ? (
-          <Promotion lang={lang} promotion={promotion} />
+          <Promotion lang={lang} />
         ) : kind === "open" ? (
           <OpenInApp lang={lang} />
         ) : (
           <NotFound lang={lang} />
         )}
-        {kind !== "open" && <Footer lang={lang} />}
+        {kind !== "open" && kind !== "promo" && <Footer lang={lang} />}
       </body>
     </html>
   );
 }
 
 export const routes = [];
-validatePromotions(promotions);
 for (const lang of ["ko", "en"]) {
   const base = prefix(lang);
   routes.push({ route: `${base}/`, lang });
@@ -498,13 +464,6 @@ for (const lang of ["ko", "en"]) {
   // The shared link carries no language; the script chooses the text from the visitor's browser.
   routes.push({ route: `${base}/open/`, lang, kind: "open" });
   routes.push({ route: `${base}/promo/`, lang, kind: "promo" });
-  for (const promotion of promotions)
-    routes.push({
-      route: `${base}/promo/${promotion.slug}/`,
-      lang,
-      kind: "promo",
-      promotion,
-    });
   for (const kind of ["privacy", "terms"]) {
     routes.push({
       route: `${base}/${kind}/`,

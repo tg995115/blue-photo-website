@@ -52,8 +52,7 @@ Paths below are relative to `https://app.bluewings.photo/`.
 | `/download/android/` | Google Play |
 | `/download/windows/` | Microsoft Store |
 | `/en/download/…` | English download pages |
-| `/promo/`, `/en/promo/` | Fallback while no campaign is selected |
-| `/promo/{campaign}/`, `/en/promo/{campaign}/` | Generated subscription offer page for a configured campaign |
+| `/promo/?code=…`, `/en/promo/?code=…` | Opens the code-bearing app link, then the store if the page stays visible |
 | `/privacy/`, `/en/privacy/` | Privacy policy |
 | `/terms/`, `/en/terms/` | Terms of service |
 | `/legal/…` | Markdown or plain-text legal files |
@@ -63,9 +62,11 @@ The download pages use browser-side `location.replace`, not HTTP 302. JavaScript
 
 ## Subscription promotions
 
-Campaign links use a public slug such as `/promo/creator-2026/`, not a store code in the URL path or query. Add a campaign to `src/promotions.mjs` only after the Apple offer redemption URL and Google Play custom code have been issued and reviewed. Each entry needs `slug`, `appleFreeMonths`, `googleFreeDays`, `appleUrl`, and `googleCode`. Apple and Google durations appear separately because the Google trial is configured in days. The build generates separate Korean and English pages for each entry. No campaign is currently configured; `/promo/` shows a fallback message.
+Promotion URLs carry one alphanumeric campaign code up to 64 characters. The promo page renders the **same `OpenInApp` component** as `/open/`, and calls the existing `mountBackground` from `src/open-background.mjs` with the unchanged confirmed `src/slogans.mjs` list. Background animation, pointer glow, icon pulse and reduced-motion styles are shared; no replacement background is introduced. The promo variant changes the opening text and replaces the two app/download links with a prefilled code form and one Open in app button for a manual retry.
 
-The iOS button opens the official Apple redemption URL. Android visitors can copy the Google Play custom code and open or install the app from its Play listing. They then open the subscription checkout in the app and enter the code in Google Play's payment UI. The site does not apply or verify a subscription. See [PROMOTIONS.md](PROMOTIONS.md) for the app-side flow and remaining checks.
+The page immediately opens `bluephoto://app/premium?code=<code>` on iOS or the existing package-scoped intent pattern on Android. If the visible page does not leave, it uses the existing redirect's guarded fallback to the existing download page with the code. The download page then uses Apple's official prefilled offer-code URL on iOS or a Play Install Referrer on Android. Manual mobile store choices remain internal platform-download links until the final fixed store redirect, keeping raw codes out of outbound-link measurement. The app handles sign-in, offer preparation and explicit store confirmation. Browser installation detection is not guaranteed by a custom scheme; real-device store redemption still needs verification.
+
+No API server, Cloud Run service or website backend is introduced. This is a static website change in this repository, published through the existing GitHub Pages workflow. Actual campaigns and the matching app/server release must be ready before distributing links. The page does not invent eligibility or free periods, and a code never grants Premium. Promo analytics use the canonical URL and omit raw codes/referrers. Add `preview=1` to suppress navigation during local review.
 
 ## Website analytics
 

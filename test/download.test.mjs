@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 import { createHash } from "node:crypto";
+import { transform } from "esbuild";
 import { detectPlatform, stores, site } from "../src/site.mjs";
 
 test("legal documents match their versioned source or revision hashes", async () => {
@@ -91,10 +92,10 @@ test("routes supported devices and leaves unsupported devices a choice", () => {
 });
 
 test("download script only navigates to the fixed stores, with manual preview and bot fallbacks", async () => {
-  const script = await readFile(
+  const { code: script } = await transform(await readFile(
     new URL("../dist/assets/download.js", import.meta.url),
     "utf8",
-  );
+  ), { format: "iife" });
   const run = ({
     requested = "auto",
     userAgent = "",
