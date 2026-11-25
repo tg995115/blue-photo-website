@@ -52,6 +52,7 @@ Paths below are relative to `https://app.bluewings.photo/`.
 | `/download/android/` | Google Play |
 | `/download/windows/` | Microsoft Store |
 | `/en/download/…` | English download pages |
+| `/open/`, `/en/open/` | Open the exact public photo (`p`), global search (`q`) or Memory card (`m`) in the native app |
 | `/promo/?code=…`, `/en/promo/?code=…` | Opens the code-bearing app link, then the store if the page stays visible |
 | `/privacy/`, `/en/privacy/` | Privacy policy |
 | `/terms/`, `/en/terms/` | Terms of service |

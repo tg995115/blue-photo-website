@@ -7,6 +7,7 @@ import {
   kakaoOpenExternal,
   pageLanguage,
   parseMemoryId,
+  parseOpenPath,
   planOpen,
 } from "../src/open-link.mjs";
 import { buildRows, glowFor } from "../src/open-background.mjs";
@@ -34,8 +35,8 @@ test("only a well-formed Memory card id is accepted from the address", () => {
 });
 
 test("app links and intents carry only the validated id and the fixed store destination", () => {
-  assert.equal(appLink("memory_1110_2019"), "bluephoto://app/collections/memory/memory_1110_2019");
-  const intent = androidIntent("memory_1110_2019");
+  assert.equal(appLink(parseOpenPath("?m=memory_1110_2019")), "bluephoto://app/collections/memory/memory_1110_2019");
+  const intent = androidIntent(parseOpenPath("?m=memory_1110_2019"));
   assert.ok(intent.startsWith("intent://app/collections/memory/memory_1110_2019#Intent;scheme=bluephoto;package=photo.bluewings.suwon;"));
   assert.ok(intent.endsWith(`S.browser_fallback_url=${encodeURIComponent(stores.android.url)};end`));
   assert.equal(kakaoOpenExternal("https://app.bluewings.photo/open/?m=memory_1110_2019"),
@@ -43,22 +44,22 @@ test("app links and intents carry only the validated id and the fixed store dest
 });
 
 test("arrival plan: Android opens the intent, iOS tries the scheme then the App Store, KakaoTalk escapes first", () => {
-  const id = "memory_1110_2019";
-  assert.deepEqual(planOpen({ id, userAgent: ANDROID_CHROME }), { action: "android-intent" });
-  assert.deepEqual(planOpen({ id, userAgent: ANDROID_KAKAO }), { action: "android-intent" });
-  assert.deepEqual(planOpen({ id, userAgent: IPHONE_SAFARI }), { action: "ios-scheme", fallback: stores.ios.url });
-  assert.deepEqual(planOpen({ id, userAgent: IPHONE_KAKAO }), { action: "kakao-external" });
-  assert.deepEqual(planOpen({ id, userAgent: "Mozilla/5.0 (Macintosh)", platform: "MacIntel", maxTouchPoints: 5 }),
+  const path = parseOpenPath("?m=memory_1110_2019");
+  assert.deepEqual(planOpen({ path, userAgent: ANDROID_CHROME }), { action: "android-intent" });
+  assert.deepEqual(planOpen({ path, userAgent: ANDROID_KAKAO }), { action: "android-intent" });
+  assert.deepEqual(planOpen({ path, userAgent: IPHONE_SAFARI }), { action: "ios-scheme", fallback: stores.ios.url });
+  assert.deepEqual(planOpen({ path, userAgent: IPHONE_KAKAO }), { action: "kakao-external" });
+  assert.deepEqual(planOpen({ path, userAgent: "Mozilla/5.0 (Macintosh)", platform: "MacIntel", maxTouchPoints: 5 }),
     { action: "ios-scheme", fallback: stores.ios.url }, "iPadOS reports itself as a Mac with touch");
 });
 
 test("crawlers, desktop browsers and malformed links never navigate on their own", () => {
-  const id = "memory_1110_2019";
-  assert.deepEqual(planOpen({ id, userAgent: DESKTOP }), { action: "none" });
-  assert.deepEqual(planOpen({ id, userAgent: "kakaotalk-scrap/1.0 bot" }), { action: "none" });
-  assert.deepEqual(planOpen({ id, userAgent: "facebookexternalhit/1.1" }), { action: "none" });
-  assert.deepEqual(planOpen({ id: null, userAgent: ANDROID_CHROME }), { action: "none" });
-  assert.deepEqual(planOpen({ id: null, userAgent: IPHONE_SAFARI }), { action: "none" });
+  const path = parseOpenPath("?m=memory_1110_2019");
+  assert.deepEqual(planOpen({ path, userAgent: DESKTOP }), { action: "none" });
+  assert.deepEqual(planOpen({ path, userAgent: "kakaotalk-scrap/1.0 bot" }), { action: "none" });
+  assert.deepEqual(planOpen({ path, userAgent: "facebookexternalhit/1.1" }), { action: "none" });
+  assert.deepEqual(planOpen({ path: null, userAgent: ANDROID_CHROME }), { action: "none" });
+  assert.deepEqual(planOpen({ path: null, userAgent: IPHONE_SAFARI }), { action: "none" });
 });
 
 test("the built page is static, bilingual, not indexed and keeps both buttons", async () => {
@@ -172,3 +173,16 @@ test("a failure in the decorative background cannot stop the app from opening", 
   assert.match(between, /try \{[\s\S]*mountBackground\(\{[\s\S]*\} catch \{/, "wrapped so any error is swallowed");
 });
 
+
+test("photo and global search links preserve only the exact public destination", () => {
+  const id = "photo_" + "a".repeat(32);
+  assert.equal(appLink(parseOpenPath("?p=" + id)), "bluephoto://app/photos/" + id);
+  const query = "염기훈 & 성남";
+  const path = parseOpenPath("?" + new URLSearchParams({ q: query }));
+  assert.equal(appLink(path), "bluephoto://app/search?q=" + encodeURIComponent(query));
+  assert.ok(androidIntent(path).startsWith("intent://app" + path + "#Intent;"));
+  for (const bad of ["?p=other", "?q=x", "?q=a%00b", "?q=성남&kind=PLAYER",
+    "?p=" + id + "&q=성남", "?q=서울&q=성남", "?q=" + "a".repeat(121)]) {
+    assert.equal(parseOpenPath(bad), null);
+  }
+});

@@ -1,7 +1,6 @@
 // Open a shared Blue Photo link in the app, or send the visitor to the store.
 //
-// Only a validated Memory card id is ever placed in the app link, and the store destinations are the
-// fixed reviewed URLs in site.mjs. Nothing in the address can choose where the visitor is sent.
+// App routes and store destinations are fixed. Only validated public identifiers and search text vary.
 import { detectPlatform, stores } from "./site.mjs";
 
 export const MEMORY_CARD_ID =
@@ -14,14 +13,34 @@ export function parseMemoryId(search) {
   return value !== null && MEMORY_CARD_ID.test(value) ? value : null;
 }
 
-export function appLink(id) {
-  return `bluephoto://app/collections/memory/${id}`;
+/** Return the canonical native path, or null for an unsupported destination. */
+export function parseOpenPath(search) {
+  const params = new URLSearchParams(search);
+  const keys = ["m", "p", "q"].filter(key => params.has(key));
+  if (keys.length !== 1) return null;
+  if (keys[0] === "m") {
+    const id = parseMemoryId(search);
+    return id && `/collections/memory/${id}`;
+  }
+  if ([...params.keys()].length !== 1) return null;
+  const value = params.get(keys[0]);
+  if (keys[0] === "p") return /^photo_[0-9a-f]{32}$/.test(value) ? `/photos/${value}` : null;
+  if (/[\p{Cc}\u2028\u2029\uFFFD]/u.test(value)) return null;
+  const query = value.normalize("NFC").trim();
+  if ([...query].length < 2 || query.length > 120) return null;
+  // Native parsers accept canonical RFC 3986 component encoding.
+  const encoded = encodeURIComponent(query).replace(/[!'()*]/g, c =>
+    "%" + c.charCodeAt(0).toString(16).toUpperCase());
+  return `/search?q=${encoded}`;
 }
 
-/** Chrome's intent URL: opens the installed app, or goes to the Play page when it is missing. */
-export function androidIntent(id) {
+export function appLink(path) {
+  return `bluephoto://app${path}`;
+}
+
+export function androidIntent(path) {
   return (
-    `intent://app/collections/memory/${id}#Intent;scheme=bluephoto;package=${ANDROID_PACKAGE};` +
+    `intent://app${path}#Intent;scheme=bluephoto;package=${ANDROID_PACKAGE};` +
     `S.browser_fallback_url=${encodeURIComponent(stores.android.url)};end`
   );
 }
@@ -35,8 +54,8 @@ export function kakaoOpenExternal(pageUrl) {
  * What to do on arrival. `none` leaves the page with its two visible buttons (crawlers, desktop browsers
  * and malformed links never navigate on their own).
  */
-export function planOpen({ id, userAgent = "", platform = "", maxTouchPoints = 0 }) {
-  if (id === null) return { action: "none" };
+export function planOpen({ path, userAgent = "", platform = "", maxTouchPoints = 0 }) {
+  if (path === null) return { action: "none" };
   const os = detectPlatform({ userAgent, platform, maxTouchPoints });
   if (os === "android") return { action: "android-intent" };
   if (os === "ios") {

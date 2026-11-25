@@ -309,8 +309,8 @@ function OpenInApp({ lang, promotion = false }) {
       {/* An older app opens but ignores a link type it does not know; this tells the visitor what to do. */}
       <p
         className="download-help"
-        data-ko="앱은 열렸는데 이 카드가 보이지 않나요? 앱을 최신 버전으로 업데이트한 뒤 이 링크를 다시 열어 주세요."
-        data-en="App opened, but no card? Update Blue Photo to the latest version, then open this link again."
+        data-ko={copy.ko.openUpdate}
+        data-en={copy.en.openUpdate}
       >
         {t.openUpdate}
       </p>
