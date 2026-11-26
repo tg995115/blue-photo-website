@@ -49,7 +49,9 @@ test("every Pages page has working root links, assets and custom-domain metadata
   const pages = (await readdir(root, { recursive: true })).filter((name) =>
     name.endsWith(".html"),
   );
-  assert.equal(pages.length, 21);
+  assert.equal(pages.length, 23);
+  for (const route of ["docs/photo-mcp/index.html", "en/docs/photo-mcp/index.html"])
+    assert.ok(pages.includes(route), route);
   for (const name of pages) {
     const html = await readFile(join(root, name), "utf8");
     assert.ok(

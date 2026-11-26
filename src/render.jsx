@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { copy, site, stores } from "./site.mjs";
+import { PhotoConnectorGuide } from "./photo-connector.jsx";
 import { LegalDocument, readLegal } from "./legal.jsx";
 import { createBuildConfig } from "./build-config.mjs";
 
@@ -351,6 +352,9 @@ function Document({
   if (legal) {
     title = legal.title;
     description = legal.title;
+  } else if (kind === "photo-connector") {
+    title = lang === "ko" ? "Blue Photo 사진 커넥터 가이드" : "Blue Photo connector guide";
+    description = title;
   } else if (kind === "download") {
     title = `${t.downloadTitle}${platform ? ` — ${stores[platform].platform}` : ""}`;
     description = t.getBody;
@@ -438,6 +442,8 @@ function Document({
         )}
         {legal ? (
           <LegalDocument document={legal} lang={lang} pathFor={pathFor} />
+        ) : kind === "photo-connector" ? (
+          <PhotoConnectorGuide lang={lang} />
         ) : kind === "landing" ? (
           <Landing lang={lang} />
         ) : kind === "download" ? (
@@ -461,6 +467,7 @@ for (const lang of ["ko", "en"]) {
   routes.push({ route: `${base}/`, lang });
   routes.push({ route: `${base}/index/`, lang, canonical: `${base}/` });
   routes.push({ route: `${base}/download/`, lang, kind: "download" });
+  routes.push({ route: `${base}/docs/photo-mcp/`, lang, kind: "photo-connector" });
   // The shared link carries no language; the script chooses the text from the visitor's browser.
   routes.push({ route: `${base}/open/`, lang, kind: "open" });
   routes.push({ route: `${base}/promo/`, lang, kind: "promo" });
